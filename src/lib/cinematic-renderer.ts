@@ -1,5 +1,5 @@
 import { clamp, easeInOutSine, easeOutSine, lerp } from "./easing";
-import type { Point } from "./interest-points";
+import type { Point } from "./types";
 
 export type RenderOptions = {
   focusPoints: [Point, Point];
@@ -39,13 +39,8 @@ type Segment =
       fromEnd: CameraState;
       toStart: CameraState;
       toEnd: CameraState;
-      /** 入り側だけゆっくり引く（フェードと同時） */
       easeToCamera?: boolean;
       blendSoftness?: number;
-      /**
-       * ブレンドをセグメント前半のこの割合で完了させる。
-       * 例: 0.2 → 最初の20%で切り替え終わり、以降は引きだけ続く
-       */
       blendEndAt?: number;
     };
 
@@ -73,35 +68,27 @@ function softBlend(p: number, softness = 2): number {
   return t;
 }
 
-/** フェード中の引き: ゆっくり・着地で減速 */
 function easePull(t: number): number {
   return easeOutSine(easeInOutSine(clamp(t, 0, 1)));
 }
 
 export function buildTimeline(focusPoints: [Point, Point]): Segment[] {
-  // ズームを揃えないと、同じパン量でも画面上の移動速度が変わって見える
   const shotZoom = 2.65;
   const shotA = cam(focusPoints[0].x, focusPoints[0].y, shotZoom);
   const shotB = cam(focusPoints[1].x, focusPoints[1].y, shotZoom);
   const full = cam(0.5, 0.5, 1);
 
-  // 1: hold + 出口フェード
-  // 2: 短く見せる（ホールド短め＋出口はすぐ消す）
-  // 最後: 2は早めにフェードアウトし、その後は中央の引きだけ長く
   const holdMs = 1300;
   const xfadeMs = 1200;
   const holdBMs = 480;
-  const finaleMs = 5000; // 引きの挙動はそのまま
-  // 引き切ったあとを削って合計 8 秒に
-  const endingMs = 8000 - (holdMs + xfadeMs + holdBMs + finaleMs); // 20ms
-  // 引き尺のうち、2→全体のフェードに使う時間（これ以上2を残さない）
+  const finaleMs = 5000;
+  const endingMs = 8000 - (holdMs + xfadeMs + holdBMs + finaleMs);
   const finaleBlendMs = 1200;
 
   const panAmount = 0.024;
   const panA = panAmount;
   const panB = -panAmount;
 
-  // 1 も 2 も「同じ画面速度」でスライド（時間あたりのパン量を共通化）
   const unitMs = holdMs + xfadeMs;
   const u = (ms: number) => ms / unitMs;
 
@@ -109,7 +96,6 @@ export function buildTimeline(focusPoints: [Point, Point]): Segment[] {
   const aHoldEnd = withPan(shotA, panA, u(holdMs));
   const aEnd = withPan(shotA, panA, u(holdMs + xfadeMs));
 
-  // 2 は尺が短いので、入り〜出口まで 1 と同じ速度で連続させる
   const b0 = withPan(shotB, panB, 0);
   const bAfterEnter = withPan(shotB, panB, u(xfadeMs));
   const bHoldEnd = withPan(shotB, panB, u(xfadeMs + holdBMs));
@@ -120,7 +106,6 @@ export function buildTimeline(focusPoints: [Point, Point]): Segment[] {
   );
 
   const fullNear = cam(0.5, 0.5, 1.06);
-  const fullFar = cam(0.5, 0.5, 1);
 
   return [
     {
@@ -145,13 +130,12 @@ export function buildTimeline(focusPoints: [Point, Point]): Segment[] {
       to: bHoldEnd,
     },
     {
-      // 序盤で2を消して、残りは中央のゆっくり引きだけ
       kind: "crossfade",
       duration: finaleMs,
       fromStart: bHoldEnd,
       fromEnd: bExitEnd,
       toStart: fullNear,
-      toEnd: fullFar,
+      toEnd: full,
       easeToCamera: true,
       blendSoftness: 2,
       blendEndAt: finaleBlendMs / finaleMs,
@@ -159,7 +143,7 @@ export function buildTimeline(focusPoints: [Point, Point]): Segment[] {
     {
       kind: "hold",
       duration: endingMs,
-      from: fullFar,
+      from: full,
       to: full,
       fadeOut: 0.14,
     },
@@ -196,10 +180,8 @@ function sampleFrame(segments: Segment[], timeMs: number): FrameState {
 
     const toT = seg.easeToCamera ? easePull(p) : p;
     const blendEndAt = seg.blendEndAt ?? 1;
-    const blendP = blendEndAt >= 1 ? p : clamp(p / blendEndAt, 0, 1);
-    // from のパンもフェード完了までに合わせる（消えたあとに動かさない）
     const fromT = blendEndAt >= 1 ? p : clamp(p / blendEndAt, 0, 1);
-    const blend = softBlend(blendP, seg.blendSoftness ?? 2);
+    const blend = softBlend(fromT, seg.blendSoftness ?? 2);
     return {
       camera: lerpCam(seg.fromStart, seg.fromEnd, fromT),
       fade: 0,
@@ -289,7 +271,6 @@ export function renderAtTime(
 
 export function outputSize(
   image: HTMLImageElement,
-  /** 省略時は元解像度のまま（偶数に丸めるだけ） */
   maxSide?: number,
 ): { width: number; height: number } {
   const iw = image.naturalWidth;

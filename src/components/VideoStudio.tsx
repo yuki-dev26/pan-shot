@@ -1,33 +1,25 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
-import { findInterestPoints, type Point } from "@/lib/interest-points";
+import { ZoomPointPicker } from "@/components/ZoomPointPicker";
+import { loadImage } from "@/lib/image";
+import { findInterestPoints } from "@/lib/interest-points";
+import type { Point } from "@/lib/types";
 import {
   exportCinematicVideo,
   extensionForMime,
   previewLoop,
 } from "@/lib/video-exporter";
-import { ZoomPointPicker } from "@/components/ZoomPointPicker";
 
 const DEFAULT_POINTS: [Point, Point] = [
   { x: 0.33, y: 0.35 },
   { x: 0.68, y: 0.42 },
 ];
 
-function loadImage(
-  file: File,
-): Promise<{ image: HTMLImageElement; url: string }> {
-  return new Promise((resolve, reject) => {
-    const url = URL.createObjectURL(file);
-    const img = new Image();
-    img.onload = () => resolve({ image: img, url });
-    img.onerror = () => {
-      URL.revokeObjectURL(url);
-      reject(new Error("画像の読み込みに失敗しました"));
-    };
-    img.src = url;
-  });
-}
+const btnBase =
+  "cursor-pointer border border-line bg-transparent px-4 py-3.5 text-center font-sans text-ink no-underline transition-[background,border-color,color,transform] duration-200 disabled:cursor-not-allowed disabled:opacity-45";
+const btnGhost = `${btnBase} hover:border-white/30 hover:bg-white/4 disabled:hover:border-line disabled:hover:bg-transparent`;
+const btnPrimary = `${btnBase} border-transparent bg-linear-to-br from-accent via-[#9ccfff] to-accent-2 font-bold tracking-tight text-on-accent hover:-translate-y-px hover:brightness-105 disabled:hover:translate-y-0 disabled:hover:brightness-100`;
 
 export function VideoStudio() {
   const [image, setImage] = useState<HTMLImageElement | null>(null);
@@ -49,6 +41,16 @@ export function VideoStudio() {
   const inputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
   const exportAbortRef = useRef<AbortController | null>(null);
+  const previewUrlRef = useRef<string | null>(null);
+  const videoUrlRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    previewUrlRef.current = previewUrl;
+  }, [previewUrl]);
+
+  useEffect(() => {
+    videoUrlRef.current = videoUrl;
+  }, [videoUrl]);
 
   useEffect(() => {
     if (!image || !canvasRef.current || viewMode !== "preview") return;
@@ -64,12 +66,11 @@ export function VideoStudio() {
 
   useEffect(() => {
     return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-      if (videoUrl) URL.revokeObjectURL(videoUrl);
+      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+      if (videoUrlRef.current) URL.revokeObjectURL(videoUrlRef.current);
       abortRef.current?.abort();
       exportAbortRef.current?.abort();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function handleFile(file: File | undefined) {
@@ -88,7 +89,7 @@ export function VideoStudio() {
 
     try {
       const { image: img, url } = await loadImage(file);
-      const auto = findInterestPoints(img, 2);
+      const auto = findInterestPoints(img);
       if (previewUrl) URL.revokeObjectURL(previewUrl);
       startTransition(() => {
         setImage(img);
@@ -143,7 +144,9 @@ export function VideoStudio() {
       const name = `${fileName}-baeru.${extensionForMime(mimeType)}`;
       setVideoUrl(url);
       setDownloadName(name);
-      setStatus(`完成（${extensionForMime(mimeType).toUpperCase()}）。ダウンロードできます`);
+      setStatus(
+        `完成（${extensionForMime(mimeType).toUpperCase()}）。ダウンロードできます`,
+      );
 
       const a = document.createElement("a");
       a.href = url;
@@ -162,9 +165,21 @@ export function VideoStudio() {
   }
 
   return (
-    <div className="studio">
+    <div className="grid animate-rise grid-cols-1 items-start gap-[clamp(1rem,2.5vw,1.75rem)] [animation-delay:80ms] md:grid-cols-[1.4fr_0.8fr]">
       <div
-        className={`dropzone ${dragging ? "is-drag" : ""} ${image ? "has-image" : ""}`}
+        className={`relative min-h-[min(62vh,640px)] overflow-hidden border border-line bg-bg-1 outline-none transition-[border-color,box-shadow,transform] duration-300 ${
+          image
+            ? ""
+            : "grid cursor-pointer place-items-center bg-linear-to-b from-white/3 to-transparent"
+        } ${
+          dragging
+            ? "scale-[1.01] border-accent/55 shadow-[0_0_0_1px_rgb(110_182_255/0.2),0_20px_60px_rgb(110_182_255/0.18)]"
+            : ""
+        } ${
+          !image
+            ? "hover:border-accent/55 hover:shadow-[0_0_0_1px_rgb(110_182_255/0.2),0_20px_60px_rgb(110_182_255/0.18)]"
+            : ""
+        }`}
         onDragEnter={(e) => {
           e.preventDefault();
           setDragging(true);
@@ -200,15 +215,22 @@ export function VideoStudio() {
         />
 
         {!image || !previewUrl ? (
-          <div className="dropzone-empty">
-            <span className="dropzone-mark" aria-hidden>
+          <div className="grid justify-items-center gap-2 p-8 text-center">
+            <span
+              className="mb-2 grid size-13 place-items-center border border-line font-display text-2xl text-accent animate-pulse-ring"
+              aria-hidden
+            >
               ＋
             </span>
-            <p className="dropzone-title">一枚絵をドロップ</p>
-            <p className="dropzone-sub">またはクリックして選択 · PNG / JPG / WEBP</p>
+            <p className="m-0 font-display text-2xl tracking-tight">
+              一枚絵をドロップ
+            </p>
+            <p className="m-0 text-[0.95rem] text-muted">
+              またはクリックして選択 · PNG / JPG / WEBP
+            </p>
           </div>
         ) : viewMode === "edit" ? (
-          <div className="stage stage-edit">
+          <div className="relative grid min-h-[min(62vh,640px)] w-full place-items-center bg-[#0a0c10]">
             <ZoomPointPicker
               imageUrl={previewUrl}
               focusPoints={focusPoints}
@@ -217,9 +239,12 @@ export function VideoStudio() {
             />
           </div>
         ) : (
-          <div className="stage">
-            <canvas ref={canvasRef} className="stage-canvas" />
-            <div className="stage-meta">
+          <div className="relative grid min-h-[min(62vh,640px)] w-full place-items-center bg-black">
+            <canvas
+              ref={canvasRef}
+              className="block max-h-[min(62vh,640px)] h-full w-full object-contain"
+            />
+            <div className="pointer-events-none absolute inset-x-3.5 bottom-3.5 flex justify-between gap-4 text-[0.72rem] tracking-[0.12em] text-white/70 uppercase">
               <span>LIVE PREVIEW</span>
               <span>
                 {image.naturalWidth}×{image.naturalHeight}
@@ -229,16 +254,22 @@ export function VideoStudio() {
         )}
       </div>
 
-      <aside className="panel">
+      <aside className="grid gap-5 border border-line bg-bg-1/72 p-5 backdrop-blur-md">
         {image && (
-          <div className="panel-block">
-            <p className="panel-label">View</p>
-            <div className="mode-tabs" role="tablist" aria-label="表示切替">
+          <div className="grid gap-3">
+            <p className="m-0 text-xs tracking-[0.14em] text-muted uppercase">
+              View
+            </p>
+            <div className="grid grid-cols-2 gap-1.5" role="tablist" aria-label="表示切替">
               <button
                 type="button"
                 role="tab"
                 aria-selected={viewMode === "edit"}
-                className={`mode-tab ${viewMode === "edit" ? "is-active" : ""}`}
+                className={`cursor-pointer border px-3.5 py-2.5 font-sans transition-colors duration-200 ${
+                  viewMode === "edit"
+                    ? "border-accent/55 bg-accent/10 text-ink"
+                    : "border-line bg-transparent text-muted"
+                }`}
                 onClick={() => setViewMode("edit")}
               >
                 ズーム位置
@@ -247,7 +278,11 @@ export function VideoStudio() {
                 type="button"
                 role="tab"
                 aria-selected={viewMode === "preview"}
-                className={`mode-tab ${viewMode === "preview" ? "is-active" : ""}`}
+                className={`cursor-pointer border px-3.5 py-2.5 font-sans transition-colors duration-200 ${
+                  viewMode === "preview"
+                    ? "border-accent/55 bg-accent/10 text-ink"
+                    : "border-line bg-transparent text-muted"
+                }`}
                 onClick={() => setViewMode("preview")}
               >
                 プレビュー
@@ -257,10 +292,12 @@ export function VideoStudio() {
         )}
 
         {image && (
-          <div className="panel-block">
-            <p className="panel-label">Zoom points · 2箇所 → 引き</p>
+          <div className="grid gap-3">
+            <p className="m-0 text-xs tracking-[0.14em] text-muted uppercase">
+              Zoom points · 2箇所 → 引き
+            </p>
             <div
-              className="point-list"
+              className="grid gap-2"
               role="radiogroup"
               aria-label="編集するズーム位置"
             >
@@ -270,18 +307,28 @@ export function VideoStudio() {
                   type="button"
                   role="radio"
                   aria-checked={activePoint === i}
-                  className={`point-btn ${activePoint === i ? "is-active" : ""}`}
+                  className={`flex cursor-pointer items-center gap-3 border px-3.5 py-3 text-left font-sans transition-colors duration-200 hover:border-white/28 ${
+                    activePoint === i
+                      ? "border-accent/55 bg-accent/8"
+                      : "border-line bg-transparent"
+                  }`}
                   onClick={() => {
                     setActivePoint(i);
                     setViewMode("edit");
                   }}
                 >
-                  <span className="point-num">{i + 1}</span>
-                  <span className="point-meta">
-                    <span className="point-name">
+                  <span
+                    className={`grid size-7 shrink-0 place-items-center rounded-full font-display text-sm font-extrabold text-on-accent ${
+                      activePoint === i ? "bg-accent" : "bg-accent-2"
+                    }`}
+                  >
+                    {i + 1}
+                  </span>
+                  <span className="grid min-w-0 gap-0.5">
+                    <span className="font-semibold">
                       {i === 0 ? "1箇所目" : "2箇所目"}
                     </span>
-                    <span className="point-coords">
+                    <span className="text-sm text-muted">
                       {Math.round(focusPoints[i].x * 100)}% /{" "}
                       {Math.round(focusPoints[i].y * 100)}%
                     </span>
@@ -289,17 +336,17 @@ export function VideoStudio() {
                 </button>
               ))}
             </div>
-            <p className="point-help">
+            <p className="m-0 text-sm leading-snug text-muted">
               プレビューと同じ演出をそのまま動画（MP4 / WebM）に書き出します。
             </p>
           </div>
         )}
 
-        <div className="panel-block actions">
+        <div className="grid gap-2.5">
           {image && (
             <button
               type="button"
-              className="btn btn-ghost"
+              className={btnGhost}
               onClick={() => inputRef.current?.click()}
               disabled={exporting}
             >
@@ -308,7 +355,7 @@ export function VideoStudio() {
           )}
           <button
             type="button"
-            className="btn btn-primary"
+            className={btnPrimary}
             disabled={!image || exporting}
             onClick={() => void handleExport()}
           >
@@ -317,7 +364,7 @@ export function VideoStudio() {
           {exporting && (
             <button
               type="button"
-              className="btn btn-ghost"
+              className={btnGhost}
               onClick={() => exportAbortRef.current?.abort()}
             >
               キャンセル
@@ -326,30 +373,26 @@ export function VideoStudio() {
         </div>
 
         {(exporting || status || error) && (
-          <div className="panel-block status-block">
+          <div className="grid gap-3">
             {exporting && (
-              <div className="progress" aria-hidden>
+              <div className="h-0.5 overflow-hidden bg-white/8" aria-hidden>
                 <div
-                  className="progress-bar"
+                  className="h-full bg-linear-to-r from-accent to-accent-2 transition-[width] duration-150 ease-linear"
                   style={{ width: `${progress * 100}%` }}
                 />
               </div>
             )}
-            {status && <p className="status">{status}</p>}
-            {error && <p className="error">{error}</p>}
+            {status && <p className="m-0 text-[0.92rem] text-muted">{status}</p>}
+            {error && <p className="m-0 text-[0.92rem] text-danger">{error}</p>}
             {videoUrl && !exporting && (
-              <a
-                className="btn btn-ghost download-again"
-                href={videoUrl}
-                download={downloadName}
-              >
+              <a className={`block ${btnGhost}`} href={videoUrl} download={downloadName}>
                 もう一度ダウンロード
               </a>
             )}
           </div>
         )}
 
-        <p className="hint">
+        <p className="m-0 border-t border-line pt-4 text-sm leading-normal text-muted">
           寄り（横流れ）→ フェードで寄り（逆方向）→ ゆっくりフェードで全体。
         </p>
       </aside>

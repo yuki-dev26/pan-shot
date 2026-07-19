@@ -21,6 +21,6 @@ bun run dev
 
 ## 技術
 
-- Bun + Next.js (App Router) + TypeScript + Tailwind CSS
+- Bun + Next.js (App Router) + TypeScript + Tailwind CSS v4
 - Canvas 2D で演出レンダリング
 - MediaRecorder で WebM / MP4 書き出し

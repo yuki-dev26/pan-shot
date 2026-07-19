@@ -1,9 +1,10 @@
-export type Point = { x: number; y: number };
+import type { Point } from "./types";
 
-/** 画像内の「見どころ」を簡易エッジ密度で推定し、ズーム先を返す */
+export type { Point };
+
 export function findInterestPoints(
   image: HTMLImageElement,
-  count = 3,
+  count = 2,
 ): Point[] {
   const sampleW = 120;
   const sampleH = Math.max(
@@ -30,7 +31,6 @@ export function findInterestPoints(
 
   for (let gy = 0; gy < gridY; gy++) {
     for (let gx = 0; gx < gridX; gx++) {
-      // 端すぎると構図として弱いのでスキップ
       if (gx === 0 || gy === 0 || gx === gridX - 1 || gy === gridY - 1) {
         continue;
       }
@@ -62,7 +62,6 @@ export function findInterestPoints(
 
       const cx = (x0 + cellW / 2) / sampleW;
       const cy = (y0 + cellH / 2) / sampleH;
-      // 三分割交点に近いほど少し加点
       const thirdsBoost =
         1 +
         0.25 *
@@ -95,8 +94,7 @@ export function findInterestPoints(
   }
 
   while (picked.length < count) {
-    const fallback = defaultPoints(count)[picked.length];
-    picked.push(fallback);
+    picked.push(defaultPoints(count)[picked.length]);
   }
 
   return picked;

@@ -5,7 +5,7 @@ import {
   timelineDuration,
   type RenderOptions,
 } from "./cinematic-renderer";
-import type { Point } from "./interest-points";
+import type { Point } from "./types";
 
 export type ExportProgress = {
   phase: "rendering" | "encoding" | "done";
@@ -13,7 +13,6 @@ export type ExportProgress = {
 };
 
 function pickMimeType(): string {
-  // 使えるなら MP4、だめなら WebM
   const candidates = [
     'video/mp4;codecs="avc1.42E01E"',
     "video/mp4;codecs=avc1",
@@ -42,10 +41,6 @@ function sleep(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-/**
- * プレビューと同じタイムラインを、実時間どおりに焼き付けて動画化する。
- * （速く描画しすぎると MediaRecorder の尺が短くなるため、フレーム間隔を待つ）
- */
 export async function exportCinematicVideo(
   image: HTMLImageElement,
   options: RenderOptions,
@@ -53,13 +48,11 @@ export async function exportCinematicVideo(
   signal?: AbortSignal,
 ): Promise<{ blob: Blob; mimeType: string }> {
   const fps = options.fps ?? 30;
-  // 解像度は指定がなければ元画像のまま（縮小しない）
   const size =
     options.width != null && options.height != null
       ? { width: options.width, height: options.height }
       : outputSize(image);
-  const width = size.width;
-  const height = size.height;
+  const { width, height } = size;
 
   const canvas = document.createElement("canvas");
   canvas.width = width;
@@ -87,7 +80,6 @@ export async function exportCinematicVideo(
   probeStream.getTracks().forEach((t) => t.stop());
 
   const stream = canvas.captureStream(useManualFrames ? 0 : fps);
-  // 解像度に応じてビットレートを上げ、圧縮劣化を抑える
   const pixels = width * height;
   const videoBitsPerSecond = Math.min(
     40_000_000,
@@ -111,7 +103,6 @@ export async function exportCinematicVideo(
     };
   });
 
-  // 先頭フレームを先に描いてから録画開始
   renderAtTime(ctx, image, segments, 0, width, height);
   recorder.start(200);
 
@@ -138,7 +129,6 @@ export async function exportCinematicVideo(
       progress: (i + 1) / totalFrames,
     });
 
-    // プレビューと同じ実時間で進める（これが尺ズレ防止の要点）
     const target = startedAt + (i + 1) * frameInterval;
     const wait = target - performance.now();
     if (wait > 1) {
@@ -150,7 +140,6 @@ export async function exportCinematicVideo(
 
   onProgress?.({ phase: "encoding", progress: 1 });
 
-  // 末尾フレームを確実に取り込む
   await sleep(frameInterval + 80);
   if (recorder.state !== "inactive") recorder.stop();
   stream.getTracks().forEach((t) => t.stop());
