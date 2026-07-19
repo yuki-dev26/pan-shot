@@ -79,8 +79,10 @@ function easePull(t: number): number {
 }
 
 export function buildTimeline(focusPoints: [Point, Point]): Segment[] {
-  const shotA = cam(focusPoints[0].x, focusPoints[0].y, 2.7);
-  const shotB = cam(focusPoints[1].x, focusPoints[1].y, 2.55);
+  // ズームを揃えないと、同じパン量でも画面上の移動速度が変わって見える
+  const shotZoom = 2.65;
+  const shotA = cam(focusPoints[0].x, focusPoints[0].y, shotZoom);
+  const shotB = cam(focusPoints[1].x, focusPoints[1].y, shotZoom);
   const full = cam(0.5, 0.5, 1);
 
   // 1: hold + 出口フェード
@@ -95,9 +97,11 @@ export function buildTimeline(focusPoints: [Point, Point]): Segment[] {
   // 引き尺のうち、2→全体のフェードに使う時間（これ以上2を残さない）
   const finaleBlendMs = 1200;
 
-  const panA = 0.024;
-  const panB = -0.024;
+  const panAmount = 0.024;
+  const panA = panAmount;
+  const panB = -panAmount;
 
+  // 1 も 2 も「同じ画面速度」でスライド（時間あたりのパン量を共通化）
   const unitMs = holdMs + xfadeMs;
   const u = (ms: number) => ms / unitMs;
 
@@ -105,11 +109,15 @@ export function buildTimeline(focusPoints: [Point, Point]): Segment[] {
   const aHoldEnd = withPan(shotA, panA, u(holdMs));
   const aEnd = withPan(shotA, panA, u(holdMs + xfadeMs));
 
+  // 2 は尺が短いので、入り〜出口まで 1 と同じ速度で連続させる
   const b0 = withPan(shotB, panB, 0);
   const bAfterEnter = withPan(shotB, panB, u(xfadeMs));
   const bHoldEnd = withPan(shotB, panB, u(xfadeMs + holdBMs));
-  // 2 のスライドはフェードアウト完了までにだけ伸ばす（finale 全体ではない）
-  const bExitEnd = withPan(shotB, panB, u(xfadeMs + holdBMs + finaleBlendMs));
+  const bExitEnd = withPan(
+    shotB,
+    panB,
+    u(xfadeMs + holdBMs + finaleBlendMs),
+  );
 
   const fullNear = cam(0.5, 0.5, 1.06);
   const fullFar = cam(0.5, 0.5, 1);
@@ -281,11 +289,13 @@ export function renderAtTime(
 
 export function outputSize(
   image: HTMLImageElement,
-  maxSide = 1280,
+  /** 省略時は元解像度のまま（偶数に丸めるだけ） */
+  maxSide?: number,
 ): { width: number; height: number } {
   const iw = image.naturalWidth;
   const ih = image.naturalHeight;
-  const scale = Math.min(1, maxSide / Math.max(iw, ih));
+  const scale =
+    maxSide == null ? 1 : Math.min(1, maxSide / Math.max(iw, ih));
   const width = Math.max(2, Math.round((iw * scale) / 2) * 2);
   const height = Math.max(2, Math.round((ih * scale) / 2) * 2);
   return { width, height };

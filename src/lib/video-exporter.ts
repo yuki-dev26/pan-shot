@@ -53,9 +53,13 @@ export async function exportCinematicVideo(
   signal?: AbortSignal,
 ): Promise<{ blob: Blob; mimeType: string }> {
   const fps = options.fps ?? 30;
-  const size = outputSize(image, options.width ?? options.height ?? 1920);
-  const width = options.width ?? size.width;
-  const height = options.height ?? size.height;
+  // 解像度は指定がなければ元画像のまま（縮小しない）
+  const size =
+    options.width != null && options.height != null
+      ? { width: options.width, height: options.height }
+      : outputSize(image);
+  const width = size.width;
+  const height = size.height;
 
   const canvas = document.createElement("canvas");
   canvas.width = width;
@@ -83,9 +87,16 @@ export async function exportCinematicVideo(
   probeStream.getTracks().forEach((t) => t.stop());
 
   const stream = canvas.captureStream(useManualFrames ? 0 : fps);
+  // 解像度に応じてビットレートを上げ、圧縮劣化を抑える
+  const pixels = width * height;
+  const videoBitsPerSecond = Math.min(
+    40_000_000,
+    Math.max(12_000_000, Math.round(pixels * 0.12)),
+  );
+
   const recorder = new MediaRecorder(stream, {
     mimeType,
-    videoBitsPerSecond: 12_000_000,
+    videoBitsPerSecond,
   });
 
   const chunks: BlobPart[] = [];
