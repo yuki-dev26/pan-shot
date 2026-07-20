@@ -2,10 +2,15 @@ import { VideoStudio } from "@/components/VideoStudio";
 
 export default function Home() {
   return (
-    <main className="relative z-1 flex min-h-dvh flex-col gap-5 p-[max(1rem,env(safe-area-inset-left))] pt-[max(1rem,env(safe-area-inset-top))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:gap-[clamp(1.5rem,4vw,2.75rem)] sm:p-[clamp(1.25rem,3vw,2.5rem)]">
-      <header className="grid max-w-3xl animate-rise gap-2 sm:gap-3">
-        <h1 className="m-0 max-w-full bg-linear-to-br from-white via-accent to-accent-2 bg-clip-text font-display text-[clamp(1.7rem,8vw,6.5rem)] leading-[0.92] font-extrabold tracking-[-0.045em] text-transparent wrap-break-word sm:text-[clamp(2.75rem,10vw,6.5rem)]">
-          QuickScene
+    <main className="relative z-1 flex min-h-dvh flex-col gap-4 p-[max(1rem,env(safe-area-inset-left))] pt-[max(0.75rem,env(safe-area-inset-top))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:gap-6 sm:p-[clamp(1.25rem,3vw,2.5rem)] sm:pt-[clamp(1rem,2.5vw,1.75rem)]">
+      <header className="grid max-w-3xl animate-rise gap-1.5 sm:gap-2">
+        <h1 className="m-0 max-w-full leading-none">
+          <img
+            src="/title.png"
+            alt="QuickScene"
+            className="block h-auto w-[min(100%,18rem)] max-w-full select-none sm:w-[min(100%,24rem)] md:w-[min(100%,30rem)]"
+            draggable={false}
+          />
         </h1>
         <p className="m-0 max-w-lg font-display text-[clamp(1rem,4.5vw,1.45rem)] leading-snug tracking-tight text-ink">
           イラストをおしゃれなカットイン映像に

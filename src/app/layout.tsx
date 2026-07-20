@@ -18,13 +18,30 @@ export const metadata: Metadata = {
   title: "QuickScene - イラストをおしゃれなカットイン映像に",
   description:
     "イラストにカットイン演出を加えて、おしゃれな動画に変換するツール",
+  applicationName: "QuickScene",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "QuickScene",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png", sizes: "512x512" }],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#0a0e14",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#0a0e14" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0e14" },
+  ],
+  colorScheme: "dark",
 };
 
 export default function RootLayout({

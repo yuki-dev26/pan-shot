@@ -26,3 +26,10 @@ bun run dev
 - Bun + Next.js (App Router) + TypeScript + Tailwind CSS v4
 - Canvas 2D で演出レンダリング
 - MediaRecorder で WebM / MP4 書き出し
+- PWA 対応（ホーム画面追加可。本番ビルドで Service Worker 有効）
+
+アイコンを差し替えたときは `public/icon.png`（512・透過）を更新してから:
+
+```bash
+bun run icons
+```
