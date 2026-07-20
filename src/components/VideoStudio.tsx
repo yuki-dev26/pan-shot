@@ -32,8 +32,8 @@ export function VideoStudio() {
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState<string | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
-  const [downloadName, setDownloadName] = useState("baeru-baeru.webm");
-  const [fileName, setFileName] = useState("baeru");
+  const [downloadName, setDownloadName] = useState("quickscene.webm");
+  const [fileName, setFileName] = useState("quickscene");
   const [error, setError] = useState<string | null>(null);
   const [, startTransition] = useTransition();
 
@@ -97,7 +97,7 @@ export function VideoStudio() {
         setFocusPoints([auto[0], auto[1]]);
         setActivePoint(0);
         setViewMode("edit");
-        setFileName(file.name.replace(/\.[^.]+$/, "") || "baeru");
+        setFileName(file.name.replace(/\.[^.]+$/, "") || "quickscene");
       });
     } catch {
       setError("画像の読み込みに失敗しました");
@@ -141,7 +141,7 @@ export function VideoStudio() {
       );
 
       const url = URL.createObjectURL(blob);
-      const name = `${fileName}-baeru.${extensionForMime(mimeType)}`;
+      const name = `${fileName}-quickscene.${extensionForMime(mimeType)}`;
       setVideoUrl(url);
       setDownloadName(name);
       setStatus(

@@ -15,9 +15,9 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "BAERU — 一枚絵をカットイン動画に",
+  title: "QuickScene — 一枚絵をカットイン動画に",
   description:
-    "静止画をアップロードするだけで、寄り・カット・引きのシネマティック演出動画を書き出してダウンロードできます。",
+    "一枚絵の見どころを指定するだけで、自然なカットイン動画になるツール。",
 };
 
 export default function RootLayout({
