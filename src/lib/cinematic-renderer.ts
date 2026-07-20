@@ -228,6 +228,45 @@ function drawCamera(
   );
 }
 
+let blendBuffer: HTMLCanvasElement | null = null;
+let blendCtx: CanvasRenderingContext2D | null = null;
+
+function getBlendBuffer(
+  width: number,
+  height: number,
+): { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D } {
+  if (
+    !blendBuffer ||
+    !blendCtx ||
+    blendBuffer.width !== width ||
+    blendBuffer.height !== height
+  ) {
+    blendBuffer = document.createElement("canvas");
+    blendBuffer.width = width;
+    blendBuffer.height = height;
+    const ctx = blendBuffer.getContext("2d", { alpha: false });
+    if (!ctx) {
+      throw new Error("ブレンド用 Canvas を初期化できませんでした");
+    }
+    blendCtx = ctx;
+  }
+  return { canvas: blendBuffer, ctx: blendCtx };
+}
+
+function paintOpaqueCamera(
+  ctx: CanvasRenderingContext2D,
+  image: HTMLImageElement,
+  width: number,
+  height: number,
+  camera: CameraState,
+) {
+  ctx.fillStyle = "#000000";
+  ctx.fillRect(0, 0, width, height);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  drawCamera(ctx, image, width, height, camera);
+}
+
 function drawFrame(
   ctx: CanvasRenderingContext2D,
   image: HTMLImageElement,
@@ -235,18 +274,18 @@ function drawFrame(
   height: number,
   state: FrameState,
 ) {
-  ctx.fillStyle = "#000000";
-  ctx.fillRect(0, 0, width, height);
-
   ctx.save();
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
 
-  drawCamera(ctx, image, width, height, state.camera);
+  paintOpaqueCamera(ctx, image, width, height, state.camera);
 
   if (state.blend && state.blend.amount > 0) {
-    ctx.globalAlpha = clamp(state.blend.amount, 0, 1);
-    drawCamera(ctx, image, width, height, state.blend.camera);
+    const amount = clamp(state.blend.amount, 0, 1);
+    const { canvas: layer, ctx: layerCtx } = getBlendBuffer(width, height);
+    paintOpaqueCamera(layerCtx, image, width, height, state.blend.camera);
+    ctx.globalAlpha = amount;
+    ctx.drawImage(layer, 0, 0);
     ctx.globalAlpha = 1;
   }
 

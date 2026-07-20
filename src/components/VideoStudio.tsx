@@ -16,8 +16,11 @@ const DEFAULT_POINTS: [Point, Point] = [
   { x: 0.68, y: 0.42 },
 ];
 
+const previewMinH = "min-h-[min(48vh,420px)] sm:min-h-[min(56vh,560px)] md:min-h-[min(62vh,640px)]";
+const previewMaxH = "max-h-[min(48vh,420px)] sm:max-h-[min(56vh,560px)] md:max-h-[min(62vh,640px)]";
+
 const btnBase =
-  "cursor-pointer border border-line bg-transparent px-4 py-3.5 text-center font-sans text-ink no-underline transition-[background,border-color,color,transform] duration-200 disabled:cursor-not-allowed disabled:opacity-45";
+  "cursor-pointer border border-line bg-transparent px-4 py-3.5 text-center font-sans text-ink no-underline transition-[background,border-color,color,transform] duration-200 touch-manipulation disabled:cursor-not-allowed disabled:opacity-45";
 const btnGhost = `${btnBase} hover:border-white/30 hover:bg-white/4 disabled:hover:border-line disabled:hover:bg-transparent`;
 const btnPrimary = `${btnBase} border-transparent bg-linear-to-br from-accent via-[#9ccfff] to-accent-2 font-bold tracking-tight text-on-accent hover:-translate-y-px hover:brightness-105 disabled:hover:translate-y-0 disabled:hover:brightness-100`;
 
@@ -167,7 +170,7 @@ export function VideoStudio() {
   return (
     <div className="grid animate-rise grid-cols-1 items-start gap-[clamp(1rem,2.5vw,1.75rem)] [animation-delay:80ms] md:grid-cols-[1.4fr_0.8fr]">
       <div
-        className={`relative min-h-[min(62vh,640px)] overflow-hidden border border-line bg-bg-1 outline-none transition-[border-color,box-shadow,transform] duration-300 ${
+        className={`relative ${previewMinH} overflow-hidden border border-line bg-bg-1 outline-none transition-[border-color,box-shadow,transform] duration-300 ${
           image
             ? ""
             : "grid cursor-pointer place-items-center bg-linear-to-b from-white/3 to-transparent"
@@ -215,22 +218,28 @@ export function VideoStudio() {
         />
 
         {!image || !previewUrl ? (
-          <div className="grid justify-items-center gap-2 p-8 text-center">
+          <div className="grid justify-items-center gap-2 px-5 py-8 text-center sm:p-8">
             <span
               className="mb-2 grid size-13 place-items-center border border-line font-display text-2xl text-accent animate-pulse-ring"
               aria-hidden
             >
               ＋
             </span>
-            <p className="m-0 font-display text-2xl tracking-tight">
-              一枚絵をドロップ
+            <p className="m-0 font-display text-xl tracking-tight sm:text-2xl">
+              <span className="sm:hidden">イラストを選択</span>
+              <span className="hidden sm:inline">一枚絵をドロップ</span>
             </p>
-            <p className="m-0 text-[0.95rem] text-muted">
-              またはクリックして選択 · PNG / JPG / WEBP
+            <p className="m-0 text-[0.9rem] text-muted sm:text-[0.95rem]">
+              <span className="sm:hidden">タップして選ぶ · PNG / JPG / WEBP</span>
+              <span className="hidden sm:inline">
+                またはクリックして選択 · PNG / JPG / WEBP
+              </span>
             </p>
           </div>
         ) : viewMode === "edit" ? (
-          <div className="relative grid min-h-[min(62vh,640px)] w-full place-items-center bg-[#0a0c10]">
+          <div
+            className={`relative grid ${previewMinH} w-full place-items-center bg-[#0a0c10]`}
+          >
             <ZoomPointPicker
               imageUrl={previewUrl}
               focusPoints={focusPoints}
@@ -239,12 +248,14 @@ export function VideoStudio() {
             />
           </div>
         ) : (
-          <div className="relative grid min-h-[min(62vh,640px)] w-full place-items-center bg-black">
+          <div
+            className={`relative grid ${previewMinH} w-full place-items-center bg-black`}
+          >
             <canvas
               ref={canvasRef}
-              className="block max-h-[min(62vh,640px)] h-full w-full object-contain"
+              className={`block h-auto ${previewMaxH} w-auto max-w-full`}
             />
-            <div className="pointer-events-none absolute inset-x-3.5 bottom-3.5 flex justify-between gap-4 text-[0.72rem] tracking-[0.12em] text-white/70 uppercase">
+            <div className="pointer-events-none absolute inset-x-3 bottom-3 flex justify-between gap-3 text-[0.65rem] tracking-[0.12em] text-white/70 uppercase sm:inset-x-3.5 sm:bottom-3.5 sm:text-[0.72rem]">
               <span>LIVE PREVIEW</span>
               <span>
                 {image.naturalWidth}×{image.naturalHeight}
@@ -254,7 +265,7 @@ export function VideoStudio() {
         )}
       </div>
 
-      <aside className="grid gap-5 border border-line bg-bg-1/72 p-5 backdrop-blur-md">
+      <aside className="grid gap-4 border border-line bg-bg-1/72 p-4 backdrop-blur-md sm:gap-5 sm:p-5">
         {image && (
           <div className="grid gap-3">
             <p className="m-0 text-xs tracking-[0.14em] text-muted uppercase">

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Outfit, Syne } from "next/font/google";
 import "./globals.css";
 
@@ -15,9 +15,16 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "QuickScene — 一枚絵をカットイン動画に",
+  title: "QuickScene - イラストをおしゃれなカットイン映像に",
   description:
-    "一枚絵の見どころを指定するだけで、自然なカットイン動画になるツール。",
+    "イラストにカットイン演出を加えて、おしゃれな動画に変換するツール",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#0a0e14",
 };
 
 export default function RootLayout({
@@ -27,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className={`${syne.variable} ${outfit.variable} h-full`}>
-      <body className="min-h-full antialiased">{children}</body>
+      <body className="min-h-full overflow-x-clip antialiased">{children}</body>
     </html>
   );
 }

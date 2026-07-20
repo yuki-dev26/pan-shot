@@ -44,7 +44,13 @@ body {
     radial-gradient(1200px 700px at 12% -10%, rgb(110 182 255 / 0.16), transparent 55%),
     radial-gradient(900px 600px at 90% 0%, rgb(255 125 106 / 0.1), transparent 50%),
     linear-gradient(165deg, #101722 0%, var(--color-bg-0) 45%, #070a0f 100%);
-  background-attachment: fixed;
+  background-attachment: scroll;
+}
+
+@media (min-width: 768px) {
+  body {
+    background-attachment: fixed;
+  }
 }
 
 body::before {
