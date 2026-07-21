@@ -113,7 +113,6 @@ export function VideoStudio() {
       next[index] = point;
       return next;
     });
-    if (index === 0) setActivePoint(1);
   }
 
   async function handleExport() {
@@ -226,14 +225,10 @@ export function VideoStudio() {
               ＋
             </span>
             <p className="m-0 font-display text-xl tracking-tight sm:text-2xl">
-              <span className="sm:hidden">イラストを選択</span>
-              <span className="hidden sm:inline">一枚絵をドロップ</span>
+              イラストをアップロード
             </p>
             <p className="m-0 text-[0.9rem] text-muted sm:text-[0.95rem]">
-              <span className="sm:hidden">タップして選ぶ · PNG / JPG / WEBP</span>
-              <span className="hidden sm:inline">
-                またはクリックして選択 · PNG / JPG / WEBP
-              </span>
+              PNG / JPG / WEBP
             </p>
           </div>
         ) : viewMode === "edit" ? (
@@ -255,8 +250,7 @@ export function VideoStudio() {
               ref={canvasRef}
               className={`block h-auto ${previewMaxH} w-auto max-w-full`}
             />
-            <div className="pointer-events-none absolute inset-x-3 bottom-3 flex justify-between gap-3 text-[0.65rem] tracking-[0.12em] text-white/70 uppercase sm:inset-x-3.5 sm:bottom-3.5 sm:text-[0.72rem]">
-              <span>LIVE PREVIEW</span>
+            <div className="pointer-events-none absolute inset-x-3 bottom-3 flex justify-end gap-3 text-[0.65rem] tracking-[0.12em] text-white/70 uppercase sm:inset-x-3.5 sm:bottom-3.5 sm:text-[0.72rem]">
               <span>
                 {image.naturalWidth}×{image.naturalHeight}
               </span>
@@ -305,10 +299,10 @@ export function VideoStudio() {
         {image && (
           <div className="grid gap-3">
             <p className="m-0 text-xs tracking-[0.14em] text-muted uppercase">
-              Zoom points · 2箇所 → 引き
+              Zoom points
             </p>
             <div
-              className="grid gap-2"
+              className="grid grid-cols-2 gap-1.5"
               role="radiogroup"
               aria-label="編集するズーム位置"
             >
@@ -318,9 +312,10 @@ export function VideoStudio() {
                   type="button"
                   role="radio"
                   aria-checked={activePoint === i}
-                  className={`flex cursor-pointer items-center gap-3 border px-3.5 py-3 text-left font-sans transition-colors duration-200 hover:border-white/28 ${
+                  aria-label={`ズーム${i + 1}`}
+                  className={`flex cursor-pointer items-center justify-center gap-3 border px-3.5 py-3 font-sans transition-colors duration-200 hover:border-white/28 ${
                     activePoint === i
-                      ? "border-accent/55 bg-accent/8"
+                      ? "border-white/30 bg-transparent"
                       : "border-line bg-transparent"
                   }`}
                   onClick={() => {
@@ -330,25 +325,16 @@ export function VideoStudio() {
                 >
                   <span
                     className={`grid size-7 shrink-0 place-items-center rounded-full font-display text-sm font-extrabold text-on-accent ${
-                      activePoint === i ? "bg-accent" : "bg-accent-2"
+                      i === 0 ? "bg-accent-2" : "bg-accent"
                     }`}
                   >
                     {i + 1}
-                  </span>
-                  <span className="grid min-w-0 gap-0.5">
-                    <span className="font-semibold">
-                      {i === 0 ? "1箇所目" : "2箇所目"}
-                    </span>
-                    <span className="text-sm text-muted">
-                      {Math.round(focusPoints[i].x * 100)}% /{" "}
-                      {Math.round(focusPoints[i].y * 100)}%
-                    </span>
                   </span>
                 </button>
               ))}
             </div>
             <p className="m-0 text-sm leading-snug text-muted">
-              プレビューと同じ演出をそのまま動画（MP4 / WebM）に書き出します。
+              プレビューと同じ演出をそのまま動画に書き出します。
             </p>
           </div>
         )}
@@ -361,7 +347,7 @@ export function VideoStudio() {
               onClick={() => inputRef.current?.click()}
               disabled={exporting}
             >
-              画像を差し替え
+              画像を変更
             </button>
           )}
           <button
@@ -370,7 +356,7 @@ export function VideoStudio() {
             disabled={!image || exporting}
             onClick={() => void handleExport()}
           >
-            {exporting ? "書き出し中…" : "プレビューを動画でDL"}
+            {exporting ? "書き出し中…" : "ダウンロード"}
           </button>
           {exporting && (
             <button
@@ -403,9 +389,6 @@ export function VideoStudio() {
           </div>
         )}
 
-        <p className="m-0 border-t border-line pt-4 text-sm leading-normal text-muted">
-          寄り（横流れ）→ フェードで寄り（逆方向）→ ゆっくりフェードで全体。
-        </p>
       </aside>
     </div>
   );

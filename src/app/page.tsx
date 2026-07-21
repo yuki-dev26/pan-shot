@@ -15,16 +15,9 @@ export default function Home() {
         <p className="m-0 font-display text-[clamp(1rem,4.5vw,1.45rem)] leading-snug tracking-tight text-ink text-pretty sm:whitespace-nowrap">
           イラストの見どころを指定するだけで、映えるカメラワーク動画に。
         </p>
-        <p className="m-0 max-w-xl text-[0.9rem] leading-relaxed text-muted sm:text-[clamp(0.95rem,2vw,1.05rem)]">
-          見どころを指定して、ブラウザだけでカメラワーク動画を書き出せます。
-        </p>
       </header>
 
       <VideoStudio />
-
-      <footer className="mt-auto animate-rise text-[0.7rem] tracking-wide text-muted wrap-break-word sm:text-sm [animation-delay:140ms]">
-        STILL → CUT-IN → PULL BACK · LOCAL ONLY
-      </footer>
     </main>
   );
 }

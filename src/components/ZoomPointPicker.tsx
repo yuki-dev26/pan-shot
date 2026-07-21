@@ -50,10 +50,8 @@ export function ZoomPointPicker({
         {focusPoints.map((point, i) => (
           <span
             key={i}
-            className={`pointer-events-none absolute grid size-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 border-white font-display text-sm font-extrabold text-on-accent shadow-[0_4px_16px_rgb(0_0_0/0.45)] transition-[transform,background] duration-200 sm:size-[1.85rem] ${
-              i === activeIndex
-                ? "scale-110 bg-accent"
-                : "bg-accent-2"
+            className={`pointer-events-none absolute grid size-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 border-white font-display text-sm font-extrabold text-on-accent shadow-[0_4px_16px_rgb(0_0_0/0.45)] sm:size-[1.85rem] ${
+              i === 0 ? "bg-accent-2" : "bg-accent"
             }`}
             style={{ left: `${point.x * 100}%`, top: `${point.y * 100}%` }}
             aria-hidden
@@ -61,12 +59,6 @@ export function ZoomPointPicker({
             {i + 1}
           </span>
         ))}
-      </div>
-      <div className="pointer-events-none absolute inset-x-3 bottom-3 text-[0.7rem] tracking-wide text-white/70 sm:inset-x-auto sm:left-3.5 sm:bottom-3.5 sm:text-xs">
-        <span className="sm:hidden">タップで {activeIndex + 1} 箇所目を置く</span>
-        <span className="hidden sm:inline">
-          クリックで {activeIndex + 1} 箇所目を置く
-        </span>
       </div>
     </div>
   );
