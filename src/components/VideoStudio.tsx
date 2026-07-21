@@ -1,7 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
+import {
+  Download,
+  ImageUp,
+  LoaderCircle,
+  Play,
+  Upload,
+  X,
+  ZoomIn,
+} from "lucide-react";
 import { ZoomPointPicker } from "@/components/ZoomPointPicker";
+import { useT } from "@/i18n/context";
 import { loadImage } from "@/lib/image";
 import { findInterestPoints } from "@/lib/interest-points";
 import type { Point } from "@/lib/types";
@@ -20,11 +30,13 @@ const previewMinH = "min-h-[min(48vh,420px)] sm:min-h-[min(56vh,560px)] md:min-h
 const previewMaxH = "max-h-[min(48vh,420px)] sm:max-h-[min(56vh,560px)] md:max-h-[min(62vh,640px)]";
 
 const btnBase =
-  "cursor-pointer border border-line bg-transparent px-4 py-3.5 text-center font-sans text-ink no-underline transition-[background,border-color,color,transform] duration-200 touch-manipulation disabled:cursor-not-allowed disabled:opacity-45";
+  "inline-flex cursor-pointer items-center justify-center gap-2 border border-line bg-transparent px-4 py-3.5 text-center font-sans text-ink no-underline transition-[background,border-color,color,transform] duration-200 touch-manipulation disabled:cursor-not-allowed disabled:opacity-45";
 const btnGhost = `${btnBase} hover:border-white/30 hover:bg-white/4 disabled:hover:border-line disabled:hover:bg-transparent`;
 const btnPrimary = `${btnBase} border-transparent bg-linear-to-br from-accent via-[#9ccfff] to-accent-2 font-bold tracking-tight text-on-accent hover:-translate-y-px hover:brightness-105 disabled:hover:translate-y-0 disabled:hover:brightness-100`;
+const iconClass = "size-4 shrink-0";
 
 export function VideoStudio() {
+  const t = useT();
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [focusPoints, setFocusPoints] = useState<[Point, Point]>(DEFAULT_POINTS);
@@ -79,7 +91,7 @@ export function VideoStudio() {
   async function handleFile(file: File | undefined) {
     if (!file) return;
     if (!file.type.startsWith("image/")) {
-      setError("画像ファイルを選んでください");
+      setError(t("errors.notImage"));
       return;
     }
 
@@ -103,7 +115,7 @@ export function VideoStudio() {
         setFileName(file.name.replace(/\.[^.]+$/, "") || "panshot");
       });
     } catch {
-      setError("画像の読み込みに失敗しました");
+      setError(t("errors.loadFailed"));
     }
   }
 
@@ -125,7 +137,7 @@ export function VideoStudio() {
     setExporting(true);
     setProgress(0);
     setError(null);
-    setStatus("プレビューと同じ内容を書き出しています…（実時間かかります）");
+    setStatus(t("status.exporting"));
     if (videoUrl) {
       URL.revokeObjectURL(videoUrl);
       setVideoUrl(null);
@@ -137,7 +149,7 @@ export function VideoStudio() {
         { focusPoints, fps: 30 },
         (p) => {
           setProgress(p.progress);
-          if (p.phase === "encoding") setStatus("ファイルをまとめています…");
+          if (p.phase === "encoding") setStatus(t("status.encoding"));
         },
         controller.signal,
       );
@@ -147,7 +159,7 @@ export function VideoStudio() {
       setVideoUrl(url);
       setDownloadName(name);
       setStatus(
-        `完成（${extensionForMime(mimeType).toUpperCase()}）。ダウンロードできます`,
+        t("status.done", { ext: extensionForMime(mimeType).toUpperCase() }),
       );
 
       const a = document.createElement("a");
@@ -156,9 +168,9 @@ export function VideoStudio() {
       a.click();
     } catch (e) {
       if (e instanceof DOMException && e.name === "AbortError") {
-        setStatus("キャンセルしました");
+        setStatus(t("status.cancelled"));
       } else {
-        setError(e instanceof Error ? e.message : "書き出しに失敗しました");
+        setError(e instanceof Error ? e.message : t("errors.exportFailed"));
         setStatus(null);
       }
     } finally {
@@ -219,16 +231,16 @@ export function VideoStudio() {
         {!image || !previewUrl ? (
           <div className="grid justify-items-center gap-2 px-5 py-8 text-center sm:p-8">
             <span
-              className="mb-2 grid size-13 place-items-center border border-line font-display text-2xl text-accent animate-pulse-ring"
+              className="mb-2 grid size-13 place-items-center border border-line text-accent animate-pulse-ring"
               aria-hidden
             >
-              ＋
+              <Upload className="size-6" strokeWidth={1.75} />
             </span>
             <p className="m-0 font-display text-xl tracking-tight sm:text-2xl">
-              イラストをアップロード
+              {t("upload.title")}
             </p>
             <p className="m-0 text-[0.9rem] text-muted sm:text-[0.95rem]">
-              PNG / JPG / WEBP
+              {t("upload.formats")}
             </p>
           </div>
         ) : viewMode === "edit" ? (
@@ -263,34 +275,36 @@ export function VideoStudio() {
         {image && (
           <div className="grid gap-3">
             <p className="m-0 text-xs tracking-[0.14em] text-muted uppercase">
-              View
+              {t("view.label")}
             </p>
-            <div className="grid grid-cols-2 gap-1.5" role="tablist" aria-label="表示切替">
+            <div className="grid grid-cols-2 gap-1.5" role="tablist" aria-label={t("view.switchAria")}>
               <button
                 type="button"
                 role="tab"
                 aria-selected={viewMode === "edit"}
-                className={`cursor-pointer border px-3.5 py-2.5 font-sans transition-colors duration-200 ${
+                className={`inline-flex cursor-pointer items-center justify-center gap-1.5 border px-3.5 py-2.5 font-sans transition-colors duration-200 ${
                   viewMode === "edit"
                     ? "border-accent/55 bg-accent/10 text-ink"
                     : "border-line bg-transparent text-muted"
                 }`}
                 onClick={() => setViewMode("edit")}
               >
-                ズーム位置
+                <ZoomIn className={iconClass} strokeWidth={1.75} aria-hidden />
+                {t("view.zoomPoints")}
               </button>
               <button
                 type="button"
                 role="tab"
                 aria-selected={viewMode === "preview"}
-                className={`cursor-pointer border px-3.5 py-2.5 font-sans transition-colors duration-200 ${
+                className={`inline-flex cursor-pointer items-center justify-center gap-1.5 border px-3.5 py-2.5 font-sans transition-colors duration-200 ${
                   viewMode === "preview"
                     ? "border-accent/55 bg-accent/10 text-ink"
                     : "border-line bg-transparent text-muted"
                 }`}
                 onClick={() => setViewMode("preview")}
               >
-                プレビュー
+                <Play className={iconClass} strokeWidth={1.75} aria-hidden />
+                {t("view.preview")}
               </button>
             </div>
           </div>
@@ -299,12 +313,12 @@ export function VideoStudio() {
         {image && (
           <div className="grid gap-3">
             <p className="m-0 text-xs tracking-[0.14em] text-muted uppercase">
-              Zoom points
+              {t("zoom.label")}
             </p>
             <div
               className="grid grid-cols-2 gap-1.5"
               role="radiogroup"
-              aria-label="編集するズーム位置"
+              aria-label={t("zoom.editAria")}
             >
               {([0, 1] as const).map((i) => (
                 <button
@@ -312,7 +326,7 @@ export function VideoStudio() {
                   type="button"
                   role="radio"
                   aria-checked={activePoint === i}
-                  aria-label={`ズーム${i + 1}`}
+                  aria-label={t("zoom.pointAria", { n: i + 1 })}
                   className={`flex cursor-pointer items-center justify-center gap-3 border px-3.5 py-3 font-sans transition-colors duration-200 hover:border-white/28 ${
                     activePoint === i
                       ? "border-white/30 bg-transparent"
@@ -334,7 +348,7 @@ export function VideoStudio() {
               ))}
             </div>
             <p className="m-0 text-sm leading-snug text-muted">
-              プレビューと同じ演出をそのまま動画に書き出します。
+              {t("zoom.hint")}
             </p>
           </div>
         )}
@@ -347,7 +361,8 @@ export function VideoStudio() {
               onClick={() => inputRef.current?.click()}
               disabled={exporting}
             >
-              画像を変更
+              <ImageUp className={iconClass} strokeWidth={1.75} aria-hidden />
+              {t("actions.changeImage")}
             </button>
           )}
           <button
@@ -356,7 +371,12 @@ export function VideoStudio() {
             disabled={!image || exporting}
             onClick={() => void handleExport()}
           >
-            {exporting ? "書き出し中…" : "ダウンロード"}
+            {exporting ? (
+              <LoaderCircle className={`${iconClass} animate-spin`} strokeWidth={2} aria-hidden />
+            ) : (
+              <Download className={iconClass} strokeWidth={2} aria-hidden />
+            )}
+            {exporting ? t("actions.exporting") : t("actions.download")}
           </button>
           {exporting && (
             <button
@@ -364,7 +384,8 @@ export function VideoStudio() {
               className={btnGhost}
               onClick={() => exportAbortRef.current?.abort()}
             >
-              キャンセル
+              <X className={iconClass} strokeWidth={1.75} aria-hidden />
+              {t("actions.cancel")}
             </button>
           )}
         </div>
@@ -382,8 +403,9 @@ export function VideoStudio() {
             {status && <p className="m-0 text-[0.92rem] text-muted">{status}</p>}
             {error && <p className="m-0 text-[0.92rem] text-danger">{error}</p>}
             {videoUrl && !exporting && (
-              <a className={`block ${btnGhost}`} href={videoUrl} download={downloadName}>
-                もう一度ダウンロード
+              <a className={`${btnGhost}`} href={videoUrl} download={downloadName}>
+                <Download className={iconClass} strokeWidth={1.75} aria-hidden />
+                {t("actions.downloadAgain")}
               </a>
             )}
           </div>

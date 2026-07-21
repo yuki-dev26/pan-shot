@@ -1,0 +1,53 @@
+{
+  "actions": {
+    "cancel": "取消",
+    "changeImage": "更換圖片",
+    "download": "下載",
+    "downloadAgain": "再次下載",
+    "exporting": "匯出中…"
+  },
+  "app": {
+    "tagline": "只需指定插畫看點，即可生成炫酷運鏡影片。",
+    "titleAlt": "PanShot"
+  },
+  "errors": {
+    "exportFailed": "匯出失敗",
+    "loadFailed": "圖片載入失敗",
+    "notImage": "請選擇圖片檔案"
+  },
+  "lang": {
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어",
+    "label": "語言",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文"
+  },
+  "meta": {
+    "description": "只需指定插畫看點，即可生成炫酷運鏡影片。",
+    "title": "PanShot - 把插畫變成運鏡影片"
+  },
+  "status": {
+    "cancelled": "已取消",
+    "done": "完成（{ext}）。可以下載了",
+    "encoding": "正在打包檔案…",
+    "exporting": "正在匯出與預覽相同的內容…（需要實際時間）"
+  },
+  "upload": {
+    "formats": "PNG / JPG / WEBP",
+    "title": "上傳插畫"
+  },
+  "view": {
+    "label": "View",
+    "preview": "預覽",
+    "switchAria": "切換檢視",
+    "zoomPoints": "縮放位置"
+  },
+  "zoom": {
+    "editAria": "要編輯的縮放位置",
+    "hint": "將預覽中的相同效果直接匯出為影片。",
+    "label": "Zoom points",
+    "pickerAlt": "用於選擇縮放位置的圖片",
+    "pointAria": "縮放{n}"
+  }
+}

@@ -1,19 +1,30 @@
+"use client";
+
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { VideoStudio } from "@/components/VideoStudio";
+import { useT } from "@/i18n/context";
 
 export default function Home() {
+  const t = useT();
+
   return (
-    <main className="relative z-1 flex min-h-dvh flex-col gap-4 p-[max(1rem,env(safe-area-inset-left))] pt-[max(0.75rem,env(safe-area-inset-top))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:gap-6 sm:p-[clamp(1.25rem,3vw,2.5rem)] sm:pt-[clamp(1rem,2.5vw,1.75rem)]">
-      <header className="grid max-w-3xl animate-rise gap-1.5 sm:gap-2">
-        <h1 className="m-0 max-w-full leading-none">
-          <img
-            src="/title.png"
-            alt="PanShot"
-            className="block h-auto w-[min(100%,14rem)] max-w-full select-none sm:w-[min(100%,18rem)] md:w-[min(100%,22rem)]"
-            draggable={false}
-          />
-        </h1>
-        <p className="m-0 font-display text-[clamp(1rem,4.5vw,1.45rem)] leading-snug tracking-tight text-ink text-pretty sm:whitespace-nowrap">
-          イラストの見どころを指定するだけで、映えるカメラワーク動画に。
+    <main className="relative z-1 flex min-h-dvh flex-col gap-4 p-[max(1rem,env(safe-area-inset-left))] pt-[max(0.5rem,env(safe-area-inset-top))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:gap-6 sm:p-[clamp(1.25rem,3vw,2.5rem)] sm:pt-[max(0.75rem,env(safe-area-inset-top))]">
+      <header className="animate-rise">
+        <div className="flex items-start justify-between gap-3">
+          <h1 className="m-0 max-w-full leading-none">
+            <img
+              src="/title.png"
+              alt={t("app.titleAlt")}
+              className="block h-auto w-[min(100%,11rem)] max-w-full select-none sm:w-[min(100%,13.5rem)] md:w-[min(100%,16rem)]"
+              draggable={false}
+            />
+          </h1>
+          <div className="mt-2 shrink-0 sm:mt-3.5">
+            <LanguageSwitcher />
+          </div>
+        </div>
+        <p className="mt-2 mb-0 max-w-3xl font-display text-[clamp(1rem,4.5vw,1.45rem)] leading-snug tracking-tight text-ink text-pretty sm:mt-2.5">
+          {t("app.tagline")}
         </p>
       </header>
 

@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit, Syne } from "next/font/google";
+import { I18nProvider } from "@/i18n/context";
+import { defaultLocale, messages } from "@/i18n/config";
 import "./globals.css";
 
 const syne = Syne({
@@ -14,10 +16,11 @@ const outfit = Outfit({
   weight: ["400", "500", "600", "700"],
 });
 
+const defaultMessages = messages[defaultLocale];
+
 export const metadata: Metadata = {
-  title: "PanShot - イラストをカメラワーク動画に",
-  description:
-    "イラストの見どころを指定するだけで、映えるカメラワーク動画に。",
+  title: defaultMessages.meta.title,
+  description: defaultMessages.meta.description,
   applicationName: "PanShot",
   appleWebApp: {
     capable: true,
@@ -50,8 +53,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={`${syne.variable} ${outfit.variable} h-full`}>
-      <body className="min-h-full overflow-x-clip antialiased">{children}</body>
+    <html lang={defaultLocale} className={`${syne.variable} ${outfit.variable} h-full`}>
+      <body className="min-h-full overflow-x-clip antialiased">
+        <I18nProvider>{children}</I18nProvider>
+      </body>
     </html>
   );
 }

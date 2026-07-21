@@ -1,0 +1,53 @@
+{
+  "actions": {
+    "cancel": "キャンセル",
+    "changeImage": "画像を変更",
+    "download": "ダウンロード",
+    "downloadAgain": "もう一度ダウンロード",
+    "exporting": "書き出し中…"
+  },
+  "app": {
+    "tagline": "イラストの見どころを指定するだけで、映えるカメラワーク動画に。",
+    "titleAlt": "PanShot"
+  },
+  "errors": {
+    "exportFailed": "書き出しに失敗しました",
+    "loadFailed": "画像の読み込みに失敗しました",
+    "notImage": "画像ファイルを選んでください"
+  },
+  "lang": {
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어",
+    "label": "言語",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文"
+  },
+  "meta": {
+    "description": "イラストの見どころを指定するだけで、映えるカメラワーク動画に。",
+    "title": "PanShot - イラストをカメラワーク動画に"
+  },
+  "status": {
+    "cancelled": "キャンセルしました",
+    "done": "完成（{ext}）。ダウンロードできます",
+    "encoding": "ファイルをまとめています…",
+    "exporting": "プレビューと同じ内容を書き出しています…（実時間かかります）"
+  },
+  "upload": {
+    "formats": "PNG / JPG / WEBP",
+    "title": "イラストをアップロード"
+  },
+  "view": {
+    "label": "View",
+    "preview": "プレビュー",
+    "switchAria": "表示切替",
+    "zoomPoints": "ズーム位置"
+  },
+  "zoom": {
+    "editAria": "編集するズーム位置",
+    "hint": "プレビューと同じ演出をそのまま動画に書き出します。",
+    "label": "Zoom points",
+    "pickerAlt": "ズーム位置を選ぶ画像",
+    "pointAria": "ズーム{n}"
+  }
+}

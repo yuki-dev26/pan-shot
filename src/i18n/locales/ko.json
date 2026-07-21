@@ -1,0 +1,53 @@
+{
+  "actions": {
+    "cancel": "취소",
+    "changeImage": "이미지 변경",
+    "download": "다운로드",
+    "downloadAgain": "다시 다운로드",
+    "exporting": "내보내는 중…"
+  },
+  "app": {
+    "tagline": "일러스트의 포인트만 지정하면, 멋진 카메라워크 영상으로.",
+    "titleAlt": "PanShot"
+  },
+  "errors": {
+    "exportFailed": "내보내기에 실패했습니다",
+    "loadFailed": "이미지를 불러오지 못했습니다",
+    "notImage": "이미지 파일을 선택해 주세요"
+  },
+  "lang": {
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어",
+    "label": "언어",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文"
+  },
+  "meta": {
+    "description": "일러스트의 포인트만 지정하면, 멋진 카메라워크 영상으로.",
+    "title": "PanShot - 일러스트를 카메라워크 영상으로"
+  },
+  "status": {
+    "cancelled": "취소했습니다",
+    "done": "완료 ({ext}). 다운로드할 수 있습니다",
+    "encoding": "파일을 묶는 중…",
+    "exporting": "미리보기와 같은 내용을 내보내는 중… (실제 시간이 걸립니다)"
+  },
+  "upload": {
+    "formats": "PNG / JPG / WEBP",
+    "title": "일러스트 업로드"
+  },
+  "view": {
+    "label": "View",
+    "preview": "미리보기",
+    "switchAria": "보기 전환",
+    "zoomPoints": "줌 위치"
+  },
+  "zoom": {
+    "editAria": "편집할 줌 위치",
+    "hint": "미리보기와 같은 연출을 그대로 영상으로 내보냅니다.",
+    "label": "Zoom points",
+    "pickerAlt": "줌 위치를 고를 이미지",
+    "pointAria": "줌 {n}"
+  }
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, type MouseEvent } from "react";
+import { useT } from "@/i18n/context";
 import type { Point } from "@/lib/types";
 
 type Props = {
@@ -16,6 +17,7 @@ export function ZoomPointPicker({
   activeIndex,
   onPick,
 }: Props) {
+  const t = useT();
   const frameRef = useRef<HTMLDivElement>(null);
 
   function handleClick(e: MouseEvent<HTMLDivElement>) {
@@ -43,7 +45,7 @@ export function ZoomPointPicker({
       >
         <img
           src={imageUrl}
-          alt="ズーム位置を選ぶ画像"
+          alt={t("zoom.pickerAlt")}
           className="block h-auto max-h-[min(44vh,400px)] w-auto max-w-full select-none sm:max-h-[min(52vh,540px)] md:max-h-[min(58vh,600px)]"
           draggable={false}
         />

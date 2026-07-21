@@ -1,0 +1,53 @@
+{
+  "actions": {
+    "cancel": "Cancel",
+    "changeImage": "Change image",
+    "download": "Download",
+    "downloadAgain": "Download again",
+    "exporting": "Exporting…"
+  },
+  "app": {
+    "tagline": "Pick the highlights of your illustration and get a cinematic camera-move video.",
+    "titleAlt": "PanShot"
+  },
+  "errors": {
+    "exportFailed": "Export failed",
+    "loadFailed": "Failed to load the image",
+    "notImage": "Please choose an image file"
+  },
+  "lang": {
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어",
+    "label": "Language",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文"
+  },
+  "meta": {
+    "description": "Pick the highlights of your illustration and get a cinematic camera-move video.",
+    "title": "PanShot - Turn illustrations into cinematic camera moves"
+  },
+  "status": {
+    "cancelled": "Cancelled",
+    "done": "Done ({ext}). Ready to download",
+    "encoding": "Packaging the file…",
+    "exporting": "Exporting the same content as the preview… (this takes real time)"
+  },
+  "upload": {
+    "formats": "PNG / JPG / WEBP",
+    "title": "Upload an illustration"
+  },
+  "view": {
+    "label": "View",
+    "preview": "Preview",
+    "switchAria": "Switch view",
+    "zoomPoints": "Zoom points"
+  },
+  "zoom": {
+    "editAria": "Zoom point to edit",
+    "hint": "Export the same motion you see in the preview as a video.",
+    "label": "Zoom points",
+    "pickerAlt": "Image for choosing zoom points",
+    "pointAria": "Zoom {n}"
+  }
+}

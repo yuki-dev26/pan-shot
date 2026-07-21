@@ -1,0 +1,53 @@
+{
+  "actions": {
+    "cancel": "取消",
+    "changeImage": "更换图片",
+    "download": "下载",
+    "downloadAgain": "再次下载",
+    "exporting": "导出中…"
+  },
+  "app": {
+    "tagline": "只需指定插画看点，即可生成炫酷运镜视频。",
+    "titleAlt": "PanShot"
+  },
+  "errors": {
+    "exportFailed": "导出失败",
+    "loadFailed": "图片加载失败",
+    "notImage": "请选择图片文件"
+  },
+  "lang": {
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어",
+    "label": "语言",
+    "zh-CN": "简体中文",
+    "zh-TW": "繁體中文"
+  },
+  "meta": {
+    "description": "只需指定插画看点，即可生成炫酷运镜视频。",
+    "title": "PanShot - 把插画变成运镜视频"
+  },
+  "status": {
+    "cancelled": "已取消",
+    "done": "完成（{ext}）。可以下载了",
+    "encoding": "正在打包文件…",
+    "exporting": "正在导出与预览相同的内容…（需要实际时间）"
+  },
+  "upload": {
+    "formats": "PNG / JPG / WEBP",
+    "title": "上传插画"
+  },
+  "view": {
+    "label": "View",
+    "preview": "预览",
+    "switchAria": "切换视图",
+    "zoomPoints": "缩放位置"
+  },
+  "zoom": {
+    "editAria": "要编辑的缩放位置",
+    "hint": "将预览中的相同效果直接导出为视频。",
+    "label": "Zoom points",
+    "pickerAlt": "用于选择缩放位置的图片",
+    "pointAria": "缩放{n}"
+  }
+}
