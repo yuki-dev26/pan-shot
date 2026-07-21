@@ -1,10 +1,15 @@
 "use client";
 
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { VideoStudio } from "@/components/VideoStudio";
-import { useT } from "@/i18n/context";
+import titleAsset from "../assets/title.png";
+import { LanguageSwitcher } from "./components/LanguageSwitcher";
+import { VideoStudio } from "./components/VideoStudio";
+import { useT } from "./i18n/context";
 
-export default function Home() {
+function assetSrc(asset: string | { src: string }): string {
+  return typeof asset === "string" ? asset : asset.src;
+}
+
+export function App() {
   const t = useT();
 
   return (
@@ -13,7 +18,7 @@ export default function Home() {
         <div className="flex items-start justify-between gap-3">
           <h1 className="m-0 max-w-full leading-none">
             <img
-              src="/title.png"
+              src={assetSrc(titleAsset)}
               alt={t("app.titleAlt")}
               className="block h-auto w-[min(100%,11rem)] max-w-full select-none sm:w-[min(100%,13.5rem)] md:w-[min(100%,16rem)]"
               draggable={false}

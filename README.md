@@ -2,16 +2,57 @@
 
 イラストの見どころを指定するだけで、映えるカメラワーク動画に。
 
-静止画をアップロードすると、寄り・カット・引きのシネマティック演出動画をブラウザ内で書き出してダウンロードできます。
+静止画をアップロードすると、寄り・カット・引きのシネマティック演出動画を書き出してダウンロードできます。Web とデスクトップ（Windows / Mac）で同じ UI・ロジックを共有しています。
+
+## 構成
+
+```text
+apps/web        Next.js サイト（PWA）
+apps/desktop    Electron デスクトップアプリ
+packages/shared UI・Canvas ロジック・i18n・スタイル
+```
 
 ## セットアップ
 
 ```bash
 bun install
-bun run dev
+```
+
+## Web
+
+```bash
+bun dev
 ```
 
 [http://localhost:3000](http://localhost:3000) を開いてください。
+
+本番ビルド:
+
+```bash
+bun run build
+bun run start
+```
+
+## Desktop（Electron）
+
+開発起動:
+
+```bash
+bun run dev:desktop
+```
+
+配布用ビルド（macOS `.dmg` / Windows `.exe`）:
+
+```bash
+bun run build:desktop
+```
+
+成果物は `apps/desktop/release/` に出力されます。mac / win 個別ビルドは:
+
+```bash
+bun run --filter @panshot/desktop build:mac
+bun run --filter @panshot/desktop build:win
+```
 
 ## 使い方
 
@@ -23,12 +64,13 @@ bun run dev
 
 ## 技術
 
-- Bun + Next.js (App Router) + TypeScript + Tailwind CSS v4
-- Canvas 2D で演出レンダリング
-- MediaRecorder で WebM / MP4 書き出し
-- PWA 対応（ホーム画面追加可。本番ビルドで Service Worker 有効）
+- Bun workspaces モノレポ
+- React + TypeScript + Tailwind CSS v4
+- Web: Next.js (App Router) + PWA
+- Desktop: Electron + Vite + electron-builder
+- Canvas 2D で演出レンダリング / MediaRecorder で WebM / MP4 書き出し
 
-アイコンを差し替えたときは `public/icon.png`（512・透過）を更新してから:
+アイコンを差し替えたときは `apps/web/public/icon.png`（512・透過）を更新してから:
 
 ```bash
 bun run icons

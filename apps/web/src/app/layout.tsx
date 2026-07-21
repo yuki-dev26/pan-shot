@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit, Syne } from "next/font/google";
-import { I18nProvider } from "@/i18n/context";
-import { defaultLocale, messages } from "@/i18n/config";
+import { I18nProvider, defaultLocale, messages } from "@panshot/shared";
 import "./globals.css";
 
 const syne = Syne({

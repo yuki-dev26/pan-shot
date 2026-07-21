@@ -10,6 +10,8 @@ const withPWA = withPWAInit({
   },
 });
 
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  transpilePackages: ["@panshot/shared"],
+};
 
 export default withPWA(nextConfig);

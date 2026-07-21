@@ -1,0 +1,21 @@
+{
+  "name": "@panshot/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles/globals.css": "./src/styles/globals.css",
+    "./assets/*": "./assets/*"
+  },
+  "peerDependencies": {
+    "lucide-react": "^1.25.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
+  }
+}

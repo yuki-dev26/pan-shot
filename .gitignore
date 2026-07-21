@@ -1,8 +1,6 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
-/node_modules
-/.pnp
+node_modules
+.pnp
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -14,11 +12,19 @@
 /coverage
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 
 # production
 /build
+dist/
+release/
+out/
+
+# electron
+apps/desktop/dist/
+apps/desktop/out/
+apps/desktop/release/
 
 # misc
 .DS_Store
@@ -42,11 +48,11 @@ bun-debug.log*
 next-env.d.ts
 
 # PWA
-public/sw.js
-public/sw.js.map
-public/workbox-*.js
-public/workbox-*.js.map
-public/swe-worker-*.js
-public/swe-worker-*.js.map
-public/fallback-*.js
-public/fallback-*.js.map
+apps/web/public/sw.js
+apps/web/public/sw.js.map
+apps/web/public/workbox-*.js
+apps/web/public/workbox-*.js.map
+apps/web/public/swe-worker-*.js
+apps/web/public/swe-worker-*.js.map
+apps/web/public/fallback-*.js
+apps/web/public/fallback-*.js.map

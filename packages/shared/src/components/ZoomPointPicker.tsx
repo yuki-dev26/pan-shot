@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, type MouseEvent } from "react";
-import { useT } from "@/i18n/context";
-import type { Point } from "@/lib/types";
+import { useT } from "../i18n/context";
+import type { Point } from "../lib/types";
 
 type Props = {
   imageUrl: string;

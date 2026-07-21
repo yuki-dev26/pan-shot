@@ -10,16 +10,16 @@ import {
   X,
   ZoomIn,
 } from "lucide-react";
-import { ZoomPointPicker } from "@/components/ZoomPointPicker";
-import { useT } from "@/i18n/context";
-import { loadImage } from "@/lib/image";
-import { findInterestPoints } from "@/lib/interest-points";
-import type { Point } from "@/lib/types";
+import { ZoomPointPicker } from "./ZoomPointPicker";
+import { useT } from "../i18n/context";
+import { loadImage } from "../lib/image";
+import { findInterestPoints } from "../lib/interest-points";
+import type { Point } from "../lib/types";
 import {
   exportCinematicVideo,
   extensionForMime,
   previewLoop,
-} from "@/lib/video-exporter";
+} from "../lib/video-exporter";
 
 const DEFAULT_POINTS: [Point, Point] = [
   { x: 0.33, y: 0.35 },

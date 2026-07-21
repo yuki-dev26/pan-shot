@@ -1,8 +1,8 @@
 "use client";
 
 import { ChevronDown, Globe } from "lucide-react";
-import { locales, localeLabels, type Locale } from "@/i18n/config";
-import { useI18n } from "@/i18n/context";
+import { locales, localeLabels, type Locale } from "../i18n/config";
+import { useI18n } from "../i18n/context";
 
 export function LanguageSwitcher() {
   const { locale, setLocale, t } = useI18n();
