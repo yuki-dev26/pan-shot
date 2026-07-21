@@ -35,8 +35,8 @@ export function VideoStudio() {
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState<string | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
-  const [downloadName, setDownloadName] = useState("quickscene.webm");
-  const [fileName, setFileName] = useState("quickscene");
+  const [downloadName, setDownloadName] = useState("panshot.webm");
+  const [fileName, setFileName] = useState("panshot");
   const [error, setError] = useState<string | null>(null);
   const [, startTransition] = useTransition();
 
@@ -100,7 +100,7 @@ export function VideoStudio() {
         setFocusPoints([auto[0], auto[1]]);
         setActivePoint(0);
         setViewMode("edit");
-        setFileName(file.name.replace(/\.[^.]+$/, "") || "quickscene");
+        setFileName(file.name.replace(/\.[^.]+$/, "") || "panshot");
       });
     } catch {
       setError("画像の読み込みに失敗しました");
@@ -144,7 +144,7 @@ export function VideoStudio() {
       );
 
       const url = URL.createObjectURL(blob);
-      const name = `${fileName}-quickscene.${extensionForMime(mimeType)}`;
+      const name = `${fileName}-panshot.${extensionForMime(mimeType)}`;
       setVideoUrl(url);
       setDownloadName(name);
       setStatus(

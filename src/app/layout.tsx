@@ -15,14 +15,14 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "QuickScene - イラストをおしゃれなカットイン映像に",
+  title: "PanShot - イラストをカメラワーク動画に",
   description:
-    "イラストにカットイン演出を加えて、おしゃれな動画に変換するツール",
-  applicationName: "QuickScene",
+    "イラストの見どころを指定するだけで、映えるカメラワーク動画に。",
+  applicationName: "PanShot",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "QuickScene",
+    title: "PanShot",
   },
   formatDetection: {
     telephone: false,

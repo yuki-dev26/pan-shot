@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "QuickScene",
-    short_name: "QuickScene",
+    name: "PanShot",
+    short_name: "PanShot",
     description:
-      "イラストにカットイン演出を加えて、おしゃれな動画に変換するツール",
+      "イラストの見どころを指定するだけで、映えるカメラワーク動画に。",
     start_url: "/",
     scope: "/",
     display: "standalone",

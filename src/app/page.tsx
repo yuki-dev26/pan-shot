@@ -7,16 +7,16 @@ export default function Home() {
         <h1 className="m-0 max-w-full leading-none">
           <img
             src="/title.png"
-            alt="QuickScene"
-            className="block h-auto w-[min(100%,18rem)] max-w-full select-none sm:w-[min(100%,24rem)] md:w-[min(100%,30rem)]"
+            alt="PanShot"
+            className="block h-auto w-[min(100%,14rem)] max-w-full select-none sm:w-[min(100%,18rem)] md:w-[min(100%,22rem)]"
             draggable={false}
           />
         </h1>
-        <p className="m-0 max-w-lg font-display text-[clamp(1rem,4.5vw,1.45rem)] leading-snug tracking-tight text-ink">
-          イラストをおしゃれなカットイン映像に
+        <p className="m-0 font-display text-[clamp(1rem,4.5vw,1.45rem)] leading-snug tracking-tight text-ink text-pretty sm:whitespace-nowrap">
+          イラストの見どころを指定するだけで、映えるカメラワーク動画に。
         </p>
         <p className="m-0 max-w-xl text-[0.9rem] leading-relaxed text-muted sm:text-[clamp(0.95rem,2vw,1.05rem)]">
-          イラストにカットイン演出を加えて、おしゃれな動画に変換するツール
+          見どころを指定して、ブラウザだけでカメラワーク動画を書き出せます。
         </p>
       </header>
 
