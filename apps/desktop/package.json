@@ -64,7 +64,7 @@
           ]
         }
       ],
-      "icon": "resources/icon.png",
+      "icon": "resources/icon-mac.png",
       "type": "distribution",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
