@@ -39,6 +39,8 @@ bun-debug.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.signing.example
+!**/.env.signing.example
 
 # vercel
 .vercel

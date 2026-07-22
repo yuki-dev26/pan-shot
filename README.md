@@ -41,17 +41,32 @@ bun run start
 bun run dev:desktop
 ```
 
-配布用ビルド（macOS `.dmg` / Windows `.exe`）:
+成果物はいずれも `apps/desktop/release/` に出力されます。
+
+### Windows（`.exe`）
 
 ```bash
-bun run build:desktop
+bun run build:desktop:win
 ```
 
-成果物は `apps/desktop/release/` に出力されます。mac / win 個別ビルドは:
+### macOS（署名・公証付き `.dmg`）
+
+事前に署名用の環境変数ファイルを用意します。
 
 ```bash
-bun run --filter @panshot/desktop build:mac
-bun run --filter @panshot/desktop build:win
+cp apps/desktop/.env.signing.example apps/desktop/.env.signing
+```
+
+`apps/desktop/.env.signing` に `CSC_NAME` / `APPLE_TEAM_ID` / `APPLE_ID` / `APPLE_APP_SPECIFIC_PASSWORD` を設定したうえで:
+
+```bash
+bun run build:desktop:mac:signed
+```
+
+署名なしのローカル確認用:
+
+```bash
+bun run build:desktop:mac
 ```
 
 ## 使い方

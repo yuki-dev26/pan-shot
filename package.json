@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "packageManager": "bun@1.3.11",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "bun run --filter @panshot/web dev",
     "dev:web": "bun run --filter @panshot/web dev",
@@ -11,11 +14,17 @@
     "build": "bun run --filter @panshot/web build",
     "build:web": "bun run --filter @panshot/web build",
     "build:desktop": "bun run --filter @panshot/desktop build",
+    "build:desktop:win": "bun run --filter @panshot/desktop build:win",
+    "build:desktop:mac": "bun run --filter @panshot/desktop build:mac",
+    "build:desktop:mac:signed": "bun run --filter @panshot/desktop build:mac:signed",
     "start": "bun run --filter @panshot/web start",
     "lint": "bun run --filter @panshot/web lint",
     "icons": "bun run --filter @panshot/web icons"
   },
   "devDependencies": {
     "typescript": "^5"
+  },
+  "overrides": {
+    "mime-types": "3.0.2"
   }
 }
