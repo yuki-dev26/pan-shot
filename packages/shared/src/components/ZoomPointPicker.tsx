@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, type MouseEvent } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useT } from "../i18n/context";
 import type { Point } from "../lib/types";
 
@@ -49,18 +50,42 @@ export function ZoomPointPicker({
           className="block h-auto max-h-[min(44vh,400px)] w-auto max-w-full select-none sm:max-h-[min(52vh,540px)] md:max-h-[min(58vh,600px)]"
           draggable={false}
         />
-        {focusPoints.map((point, i) => (
-          <span
-            key={i}
-            className={`pointer-events-none absolute grid size-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 border-white font-display text-sm font-extrabold text-on-accent shadow-[0_4px_16px_rgb(0_0_0/0.45)] sm:size-[1.85rem] ${
-              i === 0 ? "bg-accent-2" : "bg-accent"
-            }`}
-            style={{ left: `${point.x * 100}%`, top: `${point.y * 100}%` }}
-            aria-hidden
-          >
-            {i + 1}
-          </span>
-        ))}
+        {focusPoints.map((point, i) => {
+          const Arrow = i === 0 ? ArrowRight : ArrowLeft;
+          const active = i === activeIndex;
+          return (
+            <span
+              key={i}
+              className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2"
+              style={{ left: `${point.x * 100}%`, top: `${point.y * 100}%` }}
+              aria-hidden
+            >
+              <span
+                className={`grid size-8 place-items-center rounded-full border-2 border-white font-display text-sm font-extrabold text-on-accent shadow-[0_4px_16px_rgb(0_0_0/0.45)] sm:size-[1.85rem] ${
+                  i === 0 ? "bg-accent-2" : "bg-accent"
+                }`}
+              >
+                {i + 1}
+              </span>
+              <span
+                className={`absolute top-1/2 -translate-y-1/2 ${
+                  i === 0 ? "left-full ml-0.5" : "right-full mr-0.5"
+                }`}
+              >
+                <Arrow
+                  className={`block size-3.5 text-white drop-shadow-[0_1px_3px_rgb(0_0_0/0.75)] ${
+                    active
+                      ? i === 0
+                        ? "animate-nudge-right"
+                        : "animate-nudge-left"
+                      : ""
+                  }`}
+                  strokeWidth={2.75}
+                />
+              </span>
+            </span>
+          );
+        })}
       </div>
     </div>
   );

@@ -14,6 +14,8 @@
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
   --animate-rise: rise 0.8s ease both;
   --animate-pulse-ring: pulse-ring 2.4s ease-in-out infinite;
+  --animate-nudge-right: nudge-right 1.8s ease-in-out infinite;
+  --animate-nudge-left: nudge-left 1.8s ease-in-out infinite;
 }
 
 @keyframes rise {
@@ -34,6 +36,26 @@
   }
   50% {
     box-shadow: 0 0 0 10px rgb(110 182 255 / 0);
+  }
+}
+
+@keyframes nudge-right {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes nudge-left {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-3px);
   }
 }
 

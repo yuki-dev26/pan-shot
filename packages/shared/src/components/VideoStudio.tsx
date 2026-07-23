@@ -327,10 +327,10 @@ export function VideoStudio() {
                   role="radio"
                   aria-checked={activePoint === i}
                   aria-label={t("zoom.pointAria", { n: i + 1 })}
-                  className={`flex cursor-pointer items-center justify-center gap-3 border px-3.5 py-3 font-sans transition-colors duration-200 hover:border-white/28 ${
+                  className={`flex cursor-pointer items-center justify-center gap-3 border px-3.5 py-3 font-sans transition-colors duration-200 ${
                     activePoint === i
-                      ? "border-white/30 bg-transparent"
-                      : "border-line bg-transparent"
+                      ? "border-accent/55 bg-accent/10 text-ink"
+                      : "border-line bg-transparent text-muted hover:border-white/28"
                   }`}
                   onClick={() => {
                     setActivePoint(i);
