@@ -34,7 +34,8 @@
     "cancelled": "Cancelled",
     "done": "Done ({ext}). Ready to download",
     "encoding": "Packaging the file…",
-    "exporting": "Exporting the same content as the preview… (this takes real time)"
+    "exporting": "Exporting the same content as the preview…",
+    "loadingImage": "Loading image…"
   },
   "upload": {
     "formats": "PNG / JPG / WEBP",

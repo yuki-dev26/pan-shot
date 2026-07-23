@@ -78,16 +78,17 @@ export function buildTimeline(focusPoints: [Point, Point]): Segment[] {
   const shotB = cam(focusPoints[1].x, focusPoints[1].y, shotZoom);
   const full = cam(0.5, 0.5, 1);
 
+  const totalMs = 8000;
   const holdMs = 1300;
   const xfadeMs = 1200;
   const holdBMs = 480;
-  const finaleMs = 5000;
-  const endingMs = 8000 - (holdMs + xfadeMs + holdBMs + finaleMs);
+  const endingMs = 1500;
+  const finaleMs = totalMs - (holdMs + xfadeMs + holdBMs + endingMs);
   const finaleBlendMs = 1200;
 
-  const panAmount = 0.024;
+  const panAmount = 0.05;
   const panA = panAmount;
-  const panB = -panAmount;
+  const panB = -panAmount * 0.7;
 
   const unitMs = holdMs + xfadeMs;
   const u = (ms: number) => ms / unitMs;
@@ -113,7 +114,6 @@ export function buildTimeline(focusPoints: [Point, Point]): Segment[] {
       duration: holdMs,
       from: a0,
       to: aHoldEnd,
-      fadeIn: 0.38,
     },
     {
       kind: "crossfade",
@@ -145,7 +145,6 @@ export function buildTimeline(focusPoints: [Point, Point]): Segment[] {
       duration: endingMs,
       from: full,
       to: full,
-      fadeOut: 0.14,
     },
   ];
 }
@@ -228,29 +227,38 @@ function drawCamera(
   );
 }
 
-let blendBuffer: HTMLCanvasElement | null = null;
-let blendCtx: CanvasRenderingContext2D | null = null;
+type BlendLayer = {
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+};
+
+/** 出力 canvas ごとに独立させ、プレビューと書き出しの同時実行で干渉しないようにする */
+const blendByTarget = new WeakMap<CanvasRenderingContext2D, BlendLayer>();
 
 function getBlendBuffer(
+  targetCtx: CanvasRenderingContext2D,
   width: number,
   height: number,
-): { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D } {
+): BlendLayer {
+  const existing = blendByTarget.get(targetCtx);
   if (
-    !blendBuffer ||
-    !blendCtx ||
-    blendBuffer.width !== width ||
-    blendBuffer.height !== height
+    existing &&
+    existing.canvas.width === width &&
+    existing.canvas.height === height
   ) {
-    blendBuffer = document.createElement("canvas");
-    blendBuffer.width = width;
-    blendBuffer.height = height;
-    const ctx = blendBuffer.getContext("2d", { alpha: false });
-    if (!ctx) {
-      throw new Error("ブレンド用 Canvas を初期化できませんでした");
-    }
-    blendCtx = ctx;
+    return existing;
   }
-  return { canvas: blendBuffer, ctx: blendCtx };
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d", { alpha: false });
+  if (!ctx) {
+    throw new Error("ブレンド用 Canvas を初期化できませんでした");
+  }
+  const layer = { canvas, ctx };
+  blendByTarget.set(targetCtx, layer);
+  return layer;
 }
 
 function paintOpaqueCamera(
@@ -282,7 +290,7 @@ function drawFrame(
 
   if (state.blend && state.blend.amount > 0) {
     const amount = clamp(state.blend.amount, 0, 1);
-    const { canvas: layer, ctx: layerCtx } = getBlendBuffer(width, height);
+    const { canvas: layer, ctx: layerCtx } = getBlendBuffer(ctx, width, height);
     paintOpaqueCamera(layerCtx, image, width, height, state.blend.camera);
     ctx.globalAlpha = amount;
     ctx.drawImage(layer, 0, 0);

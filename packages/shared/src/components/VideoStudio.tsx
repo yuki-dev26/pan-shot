@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Download,
   ImageUp,
@@ -50,7 +50,7 @@ export function VideoStudio() {
   const [downloadName, setDownloadName] = useState("panshot.webm");
   const [fileName, setFileName] = useState("panshot");
   const [error, setError] = useState<string | null>(null);
-  const [, startTransition] = useTransition();
+  const [loadingImage, setLoadingImage] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -58,6 +58,9 @@ export function VideoStudio() {
   const exportAbortRef = useRef<AbortController | null>(null);
   const previewUrlRef = useRef<string | null>(null);
   const videoUrlRef = useRef<string | null>(null);
+  const loadingImageRef = useRef(false);
+
+  const imageBusy = loadingImage || exporting;
 
   useEffect(() => {
     previewUrlRef.current = previewUrl;
@@ -89,12 +92,14 @@ export function VideoStudio() {
   }, []);
 
   async function handleFile(file: File | undefined) {
-    if (!file) return;
+    if (!file || loadingImageRef.current || exporting) return;
     if (!file.type.startsWith("image/")) {
       setError(t("errors.notImage"));
       return;
     }
 
+    loadingImageRef.current = true;
+    setLoadingImage(true);
     setError(null);
     setStatus(null);
     if (videoUrl) {
@@ -106,16 +111,18 @@ export function VideoStudio() {
       const { image: img, url } = await loadImage(file);
       const auto = findInterestPoints(img);
       if (previewUrl) URL.revokeObjectURL(previewUrl);
-      startTransition(() => {
-        setImage(img);
-        setPreviewUrl(url);
-        setFocusPoints([auto[0], auto[1]]);
-        setActivePoint(0);
-        setViewMode("edit");
-        setFileName(file.name.replace(/\.[^.]+$/, "") || "panshot");
-      });
+      setImage(img);
+      setPreviewUrl(url);
+      setFocusPoints([auto[0], auto[1]]);
+      setActivePoint(0);
+      setViewMode("edit");
+      setFileName(file.name.replace(/\.[^.]+$/, "") || "panshot");
     } catch {
       setError(t("errors.loadFailed"));
+    } finally {
+      loadingImageRef.current = false;
+      setLoadingImage(false);
+      if (inputRef.current) inputRef.current.value = "";
     }
   }
 
@@ -184,18 +191,21 @@ export function VideoStudio() {
         className={`relative ${previewMinH} overflow-hidden border border-line bg-bg-1 outline-none transition-[border-color,box-shadow,transform] duration-300 ${
           image
             ? ""
-            : "grid cursor-pointer place-items-center bg-linear-to-b from-white/3 to-transparent"
+            : `grid place-items-center bg-linear-to-b from-white/3 to-transparent ${
+                imageBusy ? "cursor-not-allowed opacity-70" : "cursor-pointer"
+              }`
         } ${
-          dragging
+          dragging && !imageBusy
             ? "scale-[1.01] border-accent/55 shadow-[0_0_0_1px_rgb(110_182_255/0.2),0_20px_60px_rgb(110_182_255/0.18)]"
             : ""
         } ${
-          !image
+          !image && !imageBusy
             ? "hover:border-accent/55 hover:shadow-[0_0_0_1px_rgb(110_182_255/0.2),0_20px_60px_rgb(110_182_255/0.18)]"
             : ""
         }`}
         onDragEnter={(e) => {
           e.preventDefault();
+          if (imageBusy) return;
           setDragging(true);
         }}
         onDragOver={(e) => e.preventDefault()}
@@ -206,15 +216,17 @@ export function VideoStudio() {
         onDrop={(e) => {
           e.preventDefault();
           setDragging(false);
+          if (imageBusy) return;
           void handleFile(e.dataTransfer.files?.[0]);
         }}
         onClick={() => {
-          if (!image) inputRef.current?.click();
+          if (!image && !imageBusy) inputRef.current?.click();
         }}
         role={image ? undefined : "button"}
-        tabIndex={image ? undefined : 0}
+        tabIndex={image || imageBusy ? undefined : 0}
+        aria-busy={loadingImage || undefined}
         onKeyDown={(e) => {
-          if (!image && (e.key === "Enter" || e.key === " ")) {
+          if (!image && !imageBusy && (e.key === "Enter" || e.key === " ")) {
             e.preventDefault();
             inputRef.current?.click();
           }
@@ -225,6 +237,7 @@ export function VideoStudio() {
           type="file"
           accept="image/*"
           className="sr-only"
+          disabled={imageBusy}
           onChange={(e) => void handleFile(e.target.files?.[0])}
         />
 
@@ -234,14 +247,20 @@ export function VideoStudio() {
               className="mb-2 grid size-13 place-items-center border border-line text-accent animate-pulse-ring"
               aria-hidden
             >
-              <Upload className="size-6" strokeWidth={1.75} />
+              {loadingImage ? (
+                <LoaderCircle className="size-6 animate-spin" strokeWidth={1.75} />
+              ) : (
+                <Upload className="size-6" strokeWidth={1.75} />
+              )}
             </span>
             <p className="m-0 font-display text-xl tracking-tight sm:text-2xl">
-              {t("upload.title")}
+              {loadingImage ? t("status.loadingImage") : t("upload.title")}
             </p>
-            <p className="m-0 text-[0.9rem] text-muted sm:text-[0.95rem]">
-              {t("upload.formats")}
-            </p>
+            {!loadingImage && (
+              <p className="m-0 text-[0.9rem] text-muted sm:text-[0.95rem]">
+                {t("upload.formats")}
+              </p>
+            )}
           </div>
         ) : viewMode === "edit" ? (
           <div
@@ -266,6 +285,22 @@ export function VideoStudio() {
               <span>
                 {image.naturalWidth}×{image.naturalHeight}
               </span>
+            </div>
+          </div>
+        )}
+
+        {loadingImage && image && previewUrl && (
+          <div
+            className="absolute inset-0 z-10 grid place-items-center bg-bg-1/72 backdrop-blur-sm"
+            aria-live="polite"
+          >
+            <div className="grid justify-items-center gap-2 px-4 text-center">
+              <LoaderCircle
+                className="size-8 animate-spin text-accent"
+                strokeWidth={1.75}
+                aria-hidden
+              />
+              <p className="m-0 text-sm text-muted">{t("status.loadingImage")}</p>
             </div>
           </div>
         )}
@@ -359,10 +394,14 @@ export function VideoStudio() {
               type="button"
               className={btnGhost}
               onClick={() => inputRef.current?.click()}
-              disabled={exporting}
+              disabled={imageBusy}
             >
-              <ImageUp className={iconClass} strokeWidth={1.75} aria-hidden />
-              {t("actions.changeImage")}
+              {loadingImage ? (
+                <LoaderCircle className={`${iconClass} animate-spin`} strokeWidth={1.75} aria-hidden />
+              ) : (
+                <ImageUp className={iconClass} strokeWidth={1.75} aria-hidden />
+              )}
+              {loadingImage ? t("status.loadingImage") : t("actions.changeImage")}
             </button>
           )}
           <button

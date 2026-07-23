@@ -34,7 +34,8 @@
     "cancelled": "已取消",
     "done": "完成（{ext}）。可以下载了",
     "encoding": "正在打包文件…",
-    "exporting": "正在导出与预览相同的内容…（需要实际时间）"
+    "exporting": "正在导出与预览相同的内容…",
+    "loadingImage": "正在加载图片…"
   },
   "upload": {
     "formats": "PNG / JPG / WEBP",

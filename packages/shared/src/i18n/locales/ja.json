@@ -34,7 +34,8 @@
     "cancelled": "キャンセルしました",
     "done": "完成（{ext}）。ダウンロードできます",
     "encoding": "ファイルをまとめています…",
-    "exporting": "プレビューと同じ内容を書き出しています…（実時間かかります）"
+    "exporting": "プレビューと同じ内容を書き出しています…",
+    "loadingImage": "画像を読み込み中…"
   },
   "upload": {
     "formats": "PNG / JPG / WEBP",
