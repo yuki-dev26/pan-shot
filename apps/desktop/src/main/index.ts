@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell } from "electron";
+import { app, BrowserWindow, Menu, shell } from "electron";
 import { join } from "node:path";
 
 function createWindow() {
@@ -10,6 +10,7 @@ function createWindow() {
     title: "PanShot",
     backgroundColor: "#0a0e14",
     show: false,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: join(__dirname, "../preload/index.js"),
       contextIsolation: true,
@@ -35,6 +36,10 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  if (process.platform === "win32") {
+    Menu.setApplicationMenu(null);
+  }
+
   createWindow();
 
   app.on("activate", () => {

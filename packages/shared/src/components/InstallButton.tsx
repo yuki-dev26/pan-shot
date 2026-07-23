@@ -5,14 +5,7 @@ import { Download } from "lucide-react";
 import { PwaInstallDialog } from "./PwaInstallDialog";
 import { useT } from "../i18n/context";
 import { usePwaInstall } from "../hooks/usePwaInstall";
-
-function isDesktopApp(): boolean {
-  if (typeof window === "undefined") return false;
-  const desktop = (window as Window & { panshot?: { platform: string } })
-    .panshot;
-  if (desktop != null) return true;
-  return /Electron/i.test(navigator.userAgent);
-}
+import { isDesktopApp } from "../lib/platform";
 
 export function InstallButton() {
   const t = useT();

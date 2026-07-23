@@ -6,6 +6,7 @@ import { LanguageSwitcher } from "./components/LanguageSwitcher";
 import { SiteInfo } from "./components/SiteInfo";
 import { VideoStudio } from "./components/VideoStudio";
 import { useT } from "./i18n/context";
+import { isDesktopApp } from "./lib/platform";
 
 function assetSrc(asset: string | { src: string }): string {
   return typeof asset === "string" ? asset : asset.src;
@@ -44,7 +45,7 @@ export function App() {
       </header>
 
       <VideoStudio />
-      <SiteInfo />
+      {!isDesktopApp() ? <SiteInfo /> : null}
     </main>
   );
 }
