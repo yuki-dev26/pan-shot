@@ -49,22 +49,13 @@
     "subtitle": "ホーム画面に追加して、いつでも簡単にアクセスできます",
     "button": "インストール",
     "buttonLoading": "インストール中…",
-    "showInstructions": "インストール方法を見る",
     "close": "閉じる",
     "installed": "インストール済みです",
     "unsupportedBrowser": "このブラウザではインストールできません。SafariやChromeなどでお試しください。",
     "fallback": "インストール済み、またはブラウザが未対応の可能性があります",
-    "ios": {
-      "step1a": "ブラウザの",
-      "step1b": "または",
-      "step1c": "から共有をタップ",
-      "step2": "下にスクロールして「ホーム画面に追加」からインストール",
-      "note": "表示されない場合は「Safari」や「Chrome」のブラウザアプリでお試しください。",
-      "imageAlt": "iOS インストール手順",
-      "imageAlt1": "iOS インストール手順 1",
-      "imageAlt2": "iOS インストール手順 2",
-      "prevImage": "前の画像",
-      "nextImage": "次の画像"
+    "guide": {
+      "hint": "OS・ブラウザごとの手順はこちらの記事を参照してください。",
+      "open": "記事を開く"
     },
     "macSafari": {
       "step1": "Safariのメニューバーから「ファイル」を開く",

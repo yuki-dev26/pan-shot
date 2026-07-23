@@ -2,15 +2,8 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
-import {
-  Check,
-  Download,
-  LoaderCircle,
-  MoreHorizontal,
-  Share,
-  X,
-} from "lucide-react";
-import { IOSInstallImageSlider } from "./IOSInstallImageSlider";
+import { Check, Download, LoaderCircle, X } from "lucide-react";
+import { InstallGuideLink } from "./InstallGuideLink";
 import { useT } from "../i18n/context";
 import type { PwaInstallState } from "../hooks/usePwaInstall";
 
@@ -53,16 +46,11 @@ export function PwaInstallDialog({
   install,
 }: PwaInstallDialogProps) {
   const t = useT();
-  const [showInstructions, setShowInstructions] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  useEffect(() => {
-    if (!open) setShowInstructions(false);
-  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -125,18 +113,6 @@ export function PwaInstallDialog({
       );
     }
 
-    if (!showInstructions) {
-      return (
-        <button
-          type="button"
-          onClick={() => setShowInstructions(true)}
-          className="inline-flex w-full cursor-pointer items-center justify-center gap-2 border border-line bg-bg-1 px-4 py-3 font-sans text-sm text-ink transition-[background,border-color] hover:border-white/28 hover:bg-white/4"
-        >
-          {t("install.showInstructions")}
-        </button>
-      );
-    }
-
     if (isMacSafari) {
       return (
         <ol className="m-0 grid list-none gap-3 p-0">
@@ -149,20 +125,10 @@ export function PwaInstallDialog({
     if (isIOS) {
       return (
         <div className="grid gap-3">
-          <ol className="m-0 grid list-none gap-3 p-0">
-            <InstallStep number={1}>
-              {t("install.ios.step1a")}
-              <Share className="mx-1 inline size-4 align-text-bottom" />
-              {t("install.ios.step1b")}
-              <MoreHorizontal className="mx-1 inline size-4 align-text-bottom" />
-              {t("install.ios.step1c")}
-            </InstallStep>
-            <InstallStep number={2}>{t("install.ios.step2")}</InstallStep>
-          </ol>
-          <p className="m-0 text-xs leading-relaxed text-muted">
-            {t("install.ios.note")}
+          <p className="m-0 text-sm leading-relaxed text-muted">
+            {t("install.guide.hint")}
           </p>
-          <IOSInstallImageSlider />
+          <InstallGuideLink />
         </div>
       );
     }
@@ -188,7 +154,7 @@ export function PwaInstallDialog({
         role="dialog"
         aria-modal="true"
         aria-labelledby="pwa-install-title"
-        className="relative z-1 w-full max-w-md border border-line bg-bg-1 p-5 shadow-[0_24px_80px_rgb(0_0_0/0.45)]"
+        className="relative z-1 max-h-[min(90dvh,40rem)] w-full max-w-md overflow-y-auto border border-line bg-bg-1 p-5 shadow-[0_24px_80px_rgb(0_0_0/0.45)]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-3">

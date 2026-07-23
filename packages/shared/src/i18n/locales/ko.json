@@ -49,22 +49,13 @@
     "subtitle": "홈 화면에 추가해 언제든 쉽게 접근하세요",
     "button": "설치",
     "buttonLoading": "설치 중…",
-    "showInstructions": "설치 방법 보기",
     "close": "닫기",
     "installed": "이미 설치되어 있습니다",
     "unsupportedBrowser": "이 브라우저에서는 설치할 수 없습니다. Safari나 Chrome에서 시도해 주세요.",
     "fallback": "이미 설치되었거나 브라우저가 지원하지 않을 수 있습니다.",
-    "ios": {
-      "step1a": "브라우저의",
-      "step1b": "또는",
-      "step1c": "에서 공유를 탭",
-      "step2": "아래로 스크롤해 「홈 화면에 추가」에서 설치",
-      "note": "표시되지 않으면 Safari나 Chrome 브라우저 앱에서 시도해 주세요.",
-      "imageAlt": "iOS 설치 방법",
-      "imageAlt1": "iOS 설치 방법 1",
-      "imageAlt2": "iOS 설치 방법 2",
-      "prevImage": "이전 이미지",
-      "nextImage": "다음 이미지"
+    "guide": {
+      "hint": "OS·브라우저별 절차는 이 글을 참고하세요.",
+      "open": "글 열기"
     },
     "macSafari": {
       "step1": "Safari 메뉴 막대에서 「파일」을 엽니다",
