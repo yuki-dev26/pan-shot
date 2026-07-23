@@ -15,15 +15,29 @@ export type ExportProgress = {
 
 const EXPORT_MAX_SIDE = 1920;
 
+const WEBM_MIME_CANDIDATES = [
+  "video/webm;codecs=vp9",
+  "video/webm;codecs=vp8",
+  "video/webm",
+] as const;
+
+const MP4_MIME_CANDIDATES = [
+  'video/mp4;codecs="avc1.42E01E"',
+  "video/mp4;codecs=avc1",
+  "video/mp4",
+] as const;
+
+function prefersMp4Export(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return /iPhone|iPad|iPod/.test(navigator.userAgent);
+}
+
 function pickMimeType(): string {
-  const candidates = [
-    "video/webm;codecs=vp9",
-    "video/webm;codecs=vp8",
-    "video/webm",
-    'video/mp4;codecs="avc1.42E01E"',
-    "video/mp4;codecs=avc1",
-    "video/mp4",
-  ];
+  // iPhone 等は WebM 再生が弱いので MP4 を優先
+  const candidates = prefersMp4Export()
+    ? [...MP4_MIME_CANDIDATES, ...WEBM_MIME_CANDIDATES]
+    : [...WEBM_MIME_CANDIDATES, ...MP4_MIME_CANDIDATES];
+
   for (const type of candidates) {
     if (
       typeof MediaRecorder !== "undefined" &&
