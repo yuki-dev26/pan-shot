@@ -10,6 +10,39 @@
     "tagline": "Pick the highlights of your image and get a cinematic camera-move video.",
     "titleAlt": "PanShot"
   },
+  "info": {
+    "section": "Information",
+    "howto": {
+      "title": "How to use",
+      "step1": "Choose an image",
+      "step2": "Set the zoom points",
+      "step3": "Preview and download"
+    },
+    "support": {
+      "title": "Support",
+      "body": "Windows and Mac software is listed for sale.",
+      "cta": "BOOTH"
+    },
+    "developer": {
+      "title": "Developer",
+      "name": "yuki-P"
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "item1": "Images are never uploaded to a server.",
+      "item2": "Generative AI is not used to convert your image.",
+      "item3": "Only language preference is stored on your device. Nothing else is saved."
+    },
+    "disclaimer": {
+      "title": "Disclaimer",
+      "body": "We are not liable for any damages arising from use of this service."
+    },
+    "contact": {
+      "title": "Contact",
+      "body": "Questions and bug reports via X messages, please.",
+      "cta": "X Chat"
+    }
+  },
   "errors": {
     "exportFailed": "Export failed",
     "loadFailed": "Failed to load the image",

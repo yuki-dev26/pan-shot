@@ -10,6 +10,39 @@
     "tagline": "只需指定圖片看點，即可生成炫酷運鏡影片。",
     "titleAlt": "PanShot"
   },
+  "info": {
+    "section": "Information",
+    "howto": {
+      "title": "使用方法",
+      "step1": "選擇圖片",
+      "step2": "指定縮放位置",
+      "step3": "預覽確認後下載"
+    },
+    "support": {
+      "title": "支持",
+      "body": "正在販售 Windows / Mac 軟體。",
+      "cta": "BOOTH"
+    },
+    "developer": {
+      "title": "開發者",
+      "name": "yuki-P"
+    },
+    "privacy": {
+      "title": "隱私權政策",
+      "item1": "圖片不會上傳到伺服器。",
+      "item2": "圖片轉換不使用生成式 AI。",
+      "item3": "僅在本機儲存語言設定，其餘內容不儲存。"
+    },
+    "disclaimer": {
+      "title": "免責聲明",
+      "body": "因使用本服務而產生的任何損害，我方不承擔一切責任。"
+    },
+    "contact": {
+      "title": "聯絡方式",
+      "body": "問題與回饋請透過 X 私訊聯繫。",
+      "cta": "X Chat"
+    }
+  },
   "errors": {
     "exportFailed": "匯出失敗",
     "loadFailed": "圖片載入失敗",

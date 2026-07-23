@@ -10,6 +10,39 @@
     "tagline": "只需指定图片看点，即可生成炫酷运镜视频。",
     "titleAlt": "PanShot"
   },
+  "info": {
+    "section": "Information",
+    "howto": {
+      "title": "使用方法",
+      "step1": "选择图片",
+      "step2": "指定缩放位置",
+      "step3": "预览确认后下载"
+    },
+    "support": {
+      "title": "支持",
+      "body": "正在出售 Windows / Mac 软件。",
+      "cta": "BOOTH"
+    },
+    "developer": {
+      "title": "开发者",
+      "name": "yuki-P"
+    },
+    "privacy": {
+      "title": "隐私政策",
+      "item1": "图片不会上传到服务器。",
+      "item2": "图片转换不使用生成式 AI。",
+      "item3": "仅在本地保存语言设置，其他内容不保存。"
+    },
+    "disclaimer": {
+      "title": "免责声明",
+      "body": "因使用本服务而产生的任何损害，我方不承担一切责任。"
+    },
+    "contact": {
+      "title": "联系方式",
+      "body": "问题与反馈请通过 X 私信联系。",
+      "cta": "X Chat"
+    }
+  },
   "errors": {
     "exportFailed": "导出失败",
     "loadFailed": "图片加载失败",

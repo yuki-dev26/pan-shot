@@ -2,6 +2,7 @@
 
 import titleAsset from "../assets/title.png";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
+import { SiteInfo } from "./components/SiteInfo";
 import { VideoStudio } from "./components/VideoStudio";
 import { useT } from "./i18n/context";
 
@@ -29,11 +30,19 @@ export function App() {
           </div>
         </div>
         <p className="mt-2 mb-0 max-w-3xl font-display text-[clamp(1rem,4.5vw,1.45rem)] leading-snug tracking-tight text-ink text-pretty sm:mt-2.5">
-          {t("app.tagline")}
+          {t("app.tagline")
+            .split("\n")
+            .map((line, i, lines) => (
+              <span key={i}>
+                {line}
+                {i < lines.length - 1 ? <br className="sm:hidden" /> : null}
+              </span>
+            ))}
         </p>
       </header>
 
       <VideoStudio />
+      <SiteInfo />
     </main>
   );
 }

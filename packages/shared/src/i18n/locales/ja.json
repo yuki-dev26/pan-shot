@@ -7,8 +7,41 @@
     "exporting": "書き出し中…"
   },
   "app": {
-    "tagline": "画像の見どころを指定するだけで、映えるカメラワーク動画に。",
+    "tagline": "画像の見どころを指定するだけで、\n映えるカメラワーク動画に。",
     "titleAlt": "PanShot"
+  },
+  "info": {
+    "section": "Information",
+    "howto": {
+      "title": "使い方",
+      "step1": "画像を選択",
+      "step2": "ズーム位置を指定",
+      "step3": "プレビューで確認してダウンロード"
+    },
+    "support": {
+      "title": "ご支援",
+      "body": "Windows・Macソフトを出品しています。",
+      "cta": "BOOTH"
+    },
+    "developer": {
+      "title": "開発者",
+      "name": "yuki-P"
+    },
+    "privacy": {
+      "title": "プライバシーポリシー",
+      "item1": "画像はサーバーに送信されません。",
+      "item2": "画像の変換に生成AIを使用していません。",
+      "item3": "言語設定のみ端末に保存します。その他は保存しません。"
+    },
+    "disclaimer": {
+      "title": "免責事項",
+      "body": "本サービスの利用により生じた損害について、当方は一切の責任を負いません。"
+    },
+    "contact": {
+      "title": "お問い合わせ",
+      "body": "ご質問・不具合報告は X のメッセージまでお願いします。",
+      "cta": "X Chat"
+    }
   },
   "errors": {
     "exportFailed": "書き出しに失敗しました",

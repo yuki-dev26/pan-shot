@@ -7,8 +7,41 @@
     "exporting": "내보내는 중…"
   },
   "app": {
-    "tagline": "이미지의 포인트만 지정하면, 멋진 카메라워크 영상으로.",
+    "tagline": "이미지의 포인트만 지정하면,\n멋진 카메라워크 영상으로.",
     "titleAlt": "PanShot"
+  },
+  "info": {
+    "section": "Information",
+    "howto": {
+      "title": "사용 방법",
+      "step1": "이미지 선택",
+      "step2": "줌 위치 지정",
+      "step3": "미리보기로 확인 후 다운로드"
+    },
+    "support": {
+      "title": "후원",
+      "body": "Windows·Mac용 소프트웨어를 판매 중입니다.",
+      "cta": "BOOTH"
+    },
+    "developer": {
+      "title": "개발자",
+      "name": "yuki-P"
+    },
+    "privacy": {
+      "title": "개인정보 처리방침",
+      "item1": "이미지는 서버로 전송되지 않습니다.",
+      "item2": "이미지 변환에 생성 AI를 사용하지 않습니다.",
+      "item3": "언어 설정만 기기에 저장합니다. 그 외에는 저장하지 않습니다."
+    },
+    "disclaimer": {
+      "title": "면책 사항",
+      "body": "본 서비스 이용으로 발생한 손해에 대해 당사는 일체의 책임을 지지 않습니다."
+    },
+    "contact": {
+      "title": "문의",
+      "body": "질문·버그 제보는 X 메시지로 부탁드립니다.",
+      "cta": "X Chat"
+    }
   },
   "errors": {
     "exportFailed": "내보내기에 실패했습니다",
