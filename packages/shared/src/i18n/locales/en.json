@@ -54,7 +54,7 @@
     "unsupportedBrowser": "Installation is not available in this browser. Try Safari or Chrome.",
     "fallback": "Already installed, or your browser may not support installation.",
     "guide": {
-      "hint": "See this guide for steps by OS and browser.",
+      "title": "How to install PWAs on each OS and browser",
       "open": "Open article"
     },
     "macSafari": {

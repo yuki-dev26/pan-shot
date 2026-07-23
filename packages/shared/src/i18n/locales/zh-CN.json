@@ -54,7 +54,7 @@
     "unsupportedBrowser": "此浏览器无法安装。请尝试 Safari 或 Chrome。",
     "fallback": "可能已安装，或浏览器不支持安装。",
     "guide": {
-      "hint": "各系统与浏览器的步骤请参考此文章。",
+      "title": "按系统和浏览器说明 PWA 安装方法",
       "open": "打开文章"
     },
     "macSafari": {

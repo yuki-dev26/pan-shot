@@ -123,14 +123,7 @@ export function PwaInstallDialog({
     }
 
     if (isIOS) {
-      return (
-        <div className="grid gap-3">
-          <p className="m-0 text-sm leading-relaxed text-muted">
-            {t("install.guide.hint")}
-          </p>
-          <InstallGuideLink />
-        </div>
-      );
+      return <InstallGuideLink />;
     }
 
     return (

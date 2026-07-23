@@ -5,9 +5,6 @@ import { useT } from "../i18n/context";
 
 const INSTALL_GUIDE = {
   url: "https://note.com/yuki_tech/n/n5bbf2686fa98",
-  title: "PWAインストール方法をOSやブラウザごとに解説",
-  description:
-    "iOS・Android・各ブラウザごとのホーム画面追加手順をまとめています。",
   image:
     "https://assets.st-note.com/production/uploads/images/274883838/rectangle_large_type_2_9dacdbb94151c951f13f0cd6fb0ee3a1.png?width=1200",
   siteName: "note.com",
@@ -40,10 +37,7 @@ export function InstallGuideLink() {
           {INSTALL_GUIDE.siteName}
         </p>
         <p className="m-0 font-display text-sm leading-snug tracking-tight text-ink">
-          {INSTALL_GUIDE.title}
-        </p>
-        <p className="m-0 line-clamp-2 text-xs leading-relaxed text-muted">
-          {INSTALL_GUIDE.description}
+          {t("install.guide.title")}
         </p>
         <span className="mt-1 inline-flex items-center gap-1 text-xs text-accent transition-opacity group-hover:opacity-90">
           {t("install.guide.open")}

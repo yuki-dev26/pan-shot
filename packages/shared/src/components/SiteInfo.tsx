@@ -89,7 +89,7 @@ export function SiteInfo() {
           </ol>
         </div>
 
-        <div className="order-2 md:col-start-2 md:row-start-1">
+        <div className="order-3 md:col-start-2 md:row-start-1">
           <SectionHeading icon={Heart}>
             {t("info.support.title")}
           </SectionHeading>
@@ -111,7 +111,7 @@ export function SiteInfo() {
           </a>
         </div>
 
-        <div className="order-3 md:col-start-1 md:row-start-2">
+        <div className="order-2 md:col-start-1 md:row-start-2">
           <SectionHeading icon={UserRound}>
             {t("info.developer.title")}
           </SectionHeading>
