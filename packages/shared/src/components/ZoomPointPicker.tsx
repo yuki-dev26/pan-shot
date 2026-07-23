@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type MouseEvent } from "react";
+import { useRef, type PointerEvent, type MouseEvent } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useT } from "../i18n/context";
 import type { Point } from "../lib/types";
@@ -11,7 +11,18 @@ type Props = {
   activeIndex: 0 | 1;
   mirrorPan?: boolean;
   onPick: (index: 0 | 1, point: Point) => void;
+  onActiveChange?: (index: 0 | 1) => void;
 };
+
+type DragState = {
+  index: 0 | 1;
+  pointerId: number;
+  moved: boolean;
+};
+
+function clamp01(n: number) {
+  return Math.min(1, Math.max(0, n));
+}
 
 export function ZoomPointPicker({
   imageUrl,
@@ -19,24 +30,75 @@ export function ZoomPointPicker({
   activeIndex,
   mirrorPan = false,
   onPick,
+  onActiveChange,
 }: Props) {
   const t = useT();
   const frameRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<DragState | null>(null);
+  const suppressClickRef = useRef(false);
 
-  function handleClick(e: MouseEvent<HTMLDivElement>) {
+  function clientToPoint(
+    clientX: number,
+    clientY: number,
+    { clampOutside }: { clampOutside: boolean },
+  ): Point | null {
     const frame = frameRef.current;
-    if (!frame) return;
+    if (!frame) return null;
 
     const rect = frame.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;
-    const y = (e.clientY - rect.top) / rect.height;
+    if (rect.width <= 0 || rect.height <= 0) return null;
 
-    if (x < 0 || x > 1 || y < 0 || y > 1) return;
+    const x = (clientX - rect.left) / rect.width;
+    const y = (clientY - rect.top) / rect.height;
 
-    onPick(activeIndex, {
-      x: Math.min(1, Math.max(0, x)),
-      y: Math.min(1, Math.max(0, y)),
-    });
+    if (!clampOutside && (x < 0 || x > 1 || y < 0 || y > 1)) return null;
+
+    return { x: clamp01(x), y: clamp01(y) };
+  }
+
+  function handleClick(e: MouseEvent<HTMLDivElement>) {
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false;
+      return;
+    }
+
+    const point = clientToPoint(e.clientX, e.clientY, { clampOutside: false });
+    if (!point) return;
+    onPick(activeIndex, point);
+  }
+
+  function handleMarkerPointerDown(
+    e: PointerEvent<HTMLButtonElement>,
+    index: 0 | 1,
+  ) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    dragRef.current = { index, pointerId: e.pointerId, moved: false };
+    onActiveChange?.(index);
+  }
+
+  function handleMarkerPointerMove(e: PointerEvent<HTMLButtonElement>) {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== e.pointerId) return;
+
+    const point = clientToPoint(e.clientX, e.clientY, { clampOutside: true });
+    if (!point) return;
+
+    drag.moved = true;
+    onPick(drag.index, point);
+  }
+
+  function endMarkerDrag(e: PointerEvent<HTMLButtonElement>) {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== e.pointerId) return;
+
+    if (drag.moved) suppressClickRef.current = true;
+    dragRef.current = null;
+
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
   }
 
   return (
@@ -53,27 +115,36 @@ export function ZoomPointPicker({
           draggable={false}
         />
         {focusPoints.map((point, i) => {
-          const goesRight = i === 0 ? !mirrorPan : mirrorPan;
+          const index = i as 0 | 1;
+          const goesRight = index === 0 ? !mirrorPan : mirrorPan;
           const Arrow = goesRight ? ArrowRight : ArrowLeft;
-          const active = i === activeIndex;
+          const active = index === activeIndex;
           return (
             <span
-              key={i}
-              className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2"
+              key={index}
+              className="absolute -translate-x-1/2 -translate-y-1/2"
               style={{ left: `${point.x * 100}%`, top: `${point.y * 100}%` }}
-              aria-hidden
             >
-              <span
-                className={`grid size-8 place-items-center rounded-full border-2 border-white font-display text-sm font-extrabold text-on-accent shadow-[0_4px_16px_rgb(0_0_0/0.45)] sm:size-[1.85rem] ${
-                  i === 0 ? "bg-accent-2" : "bg-accent"
-                }`}
+              <button
+                type="button"
+                className={`grid size-8 cursor-grab place-items-center rounded-full border-2 border-white font-display text-sm font-extrabold text-on-accent shadow-[0_4px_16px_rgb(0_0_0/0.45)] touch-none transition-transform duration-150 active:cursor-grabbing sm:size-[1.85rem] ${
+                  index === 0 ? "bg-accent-2" : "bg-accent"
+                } ${active ? "scale-110 ring-2 ring-white/70" : ""}`}
+                aria-label={t("zoom.pointAria", { n: index + 1 })}
+                aria-pressed={active}
+                onPointerDown={(e) => handleMarkerPointerDown(e, index)}
+                onPointerMove={handleMarkerPointerMove}
+                onPointerUp={endMarkerDrag}
+                onPointerCancel={endMarkerDrag}
+                onClick={(e) => e.stopPropagation()}
               >
-                {i + 1}
-              </span>
+                {index + 1}
+              </button>
               <span
-                className={`absolute top-1/2 -translate-y-1/2 ${
+                className={`pointer-events-none absolute top-1/2 -translate-y-1/2 ${
                   goesRight ? "left-full ml-0.5" : "right-full mr-0.5"
                 }`}
+                aria-hidden
               >
                 <Arrow
                   className={`block size-3.5 text-white drop-shadow-[0_1px_3px_rgb(0_0_0/0.75)] ${

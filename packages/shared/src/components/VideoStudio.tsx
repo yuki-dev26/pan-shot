@@ -284,6 +284,7 @@ export function VideoStudio() {
               activeIndex={activePoint}
               mirrorPan={mirrorPan}
               onPick={handlePick}
+              onActiveChange={setActivePoint}
             />
           </div>
         ) : (
