@@ -7,7 +7,7 @@
     "exporting": "导出中…"
   },
   "app": {
-    "tagline": "只需指定插画看点，即可生成炫酷运镜视频。",
+    "tagline": "只需指定图片看点，即可生成炫酷运镜视频。",
     "titleAlt": "PanShot"
   },
   "errors": {
@@ -24,8 +24,11 @@
     "zh-TW": "繁體中文"
   },
   "meta": {
-    "description": "只需指定插画看点，即可生成炫酷运镜视频。",
-    "title": "PanShot - 把插画变成运镜视频"
+    "description": "只需指定图片看点，即可在浏览器中导出并下载推近、切换、拉远的炫酷运镜视频。无需注册，完全免费。",
+    "keywords": "运镜视频,图片转视频,缩放效果,电影感,视频制作,静态图,PanShot",
+    "ogDescription": "只需指定图片看点，即可在浏览器中导出并下载推近、切换、拉远的炫酷运镜视频。",
+    "ogTitle": "PanShot - 把图片变成炫酷运镜视频",
+    "title": "PanShot - 把图片变成炫酷运镜视频"
   },
   "status": {
     "cancelled": "已取消",
@@ -35,7 +38,7 @@
   },
   "upload": {
     "formats": "PNG / JPG / WEBP",
-    "title": "上传插画"
+    "title": "选择图片"
   },
   "view": {
     "label": "View",

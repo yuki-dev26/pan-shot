@@ -1,8 +1,8 @@
 # PanShot
 
-イラストの見どころを指定するだけで、映えるカメラワーク動画に。
+画像の見どころを指定するだけで、映えるカメラワーク動画に。
 
-静止画をアップロードすると、寄り・カット・引きのシネマティック演出動画を書き出してダウンロードできます。Web とデスクトップ（Windows / Mac）で同じ UI・ロジックを共有しています。
+静止画を選択すると、寄り・カット・引きのシネマティック演出動画を書き出してダウンロードできます。Web とデスクトップ（Windows / Mac）で同じ UI・ロジックを共有しています。
 
 ## 構成
 
@@ -32,6 +32,10 @@ bun dev
 bun run build
 bun run start
 ```
+
+本番デプロイ時は `apps/web/.env.example` を参考に `NEXT_PUBLIC_SITE_URL`（例: `https://example.com`）を設定してください。sitemap / OG / canonical に使います。
+
+OGP 画像は `apps/web/public/og.png`（推奨 1200×630）を置けば使われます。
 
 ## Desktop（Electron）
 

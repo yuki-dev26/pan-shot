@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "PanShot",
     short_name: "PanShot",
     description:
-      "イラストの見どころを指定するだけで、映えるカメラワーク動画に。",
+      "画像の見どころを指定するだけで、寄り・カット・引きの映えるカメラワーク動画をブラウザで書き出してダウンロード。",
     start_url: "/",
     scope: "/",
     display: "standalone",

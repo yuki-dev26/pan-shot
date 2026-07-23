@@ -41,11 +41,26 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!ready) return;
     document.documentElement.lang = locale;
-    const title = getMessage(messages[locale], "meta.title");
-    const description = getMessage(messages[locale], "meta.description");
+    const dict = messages[locale];
+    const title = getMessage(dict, "meta.title");
+    const description = getMessage(dict, "meta.description");
+    const ogTitle = getMessage(dict, "meta.ogTitle");
+    const ogDescription = getMessage(dict, "meta.ogDescription");
     document.title = title;
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute("content", description);
+    const setMetaProperty = (property: string, content: string) => {
+      const el = document.querySelector(`meta[property="${property}"]`);
+      if (el) el.setAttribute("content", content);
+    };
+    setMetaProperty("og:title", ogTitle);
+    setMetaProperty("og:description", ogDescription);
+    const setMetaName = (name: string, content: string) => {
+      const el = document.querySelector(`meta[name="${name}"]`);
+      if (el) el.setAttribute("content", content);
+    };
+    setMetaName("twitter:title", ogTitle);
+    setMetaName("twitter:description", ogDescription);
   }, [locale, ready]);
 
   const setLocale = useCallback((next: Locale) => {

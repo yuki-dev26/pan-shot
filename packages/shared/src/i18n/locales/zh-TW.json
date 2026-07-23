@@ -7,7 +7,7 @@
     "exporting": "匯出中…"
   },
   "app": {
-    "tagline": "只需指定插畫看點，即可生成炫酷運鏡影片。",
+    "tagline": "只需指定圖片看點，即可生成炫酷運鏡影片。",
     "titleAlt": "PanShot"
   },
   "errors": {
@@ -24,8 +24,11 @@
     "zh-TW": "繁體中文"
   },
   "meta": {
-    "description": "只需指定插畫看點，即可生成炫酷運鏡影片。",
-    "title": "PanShot - 把插畫變成運鏡影片"
+    "description": "只需指定圖片看點，即可在瀏覽器中匯出並下載推近、切換、拉遠的炫酷運鏡影片。無需註冊，完全免費。",
+    "keywords": "運鏡影片,圖片轉影片,縮放效果,電影感,影片製作,靜態圖,PanShot",
+    "ogDescription": "只需指定圖片看點，即可在瀏覽器中匯出並下載推近、切換、拉遠的炫酷運鏡影片。",
+    "ogTitle": "PanShot - 把圖片變成炫酷運鏡影片",
+    "title": "PanShot - 把圖片變成炫酷運鏡影片"
   },
   "status": {
     "cancelled": "已取消",
@@ -35,7 +38,7 @@
   },
   "upload": {
     "formats": "PNG / JPG / WEBP",
-    "title": "上傳插畫"
+    "title": "選擇圖片"
   },
   "view": {
     "label": "View",

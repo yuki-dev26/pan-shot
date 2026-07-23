@@ -7,7 +7,7 @@
     "exporting": "Exporting…"
   },
   "app": {
-    "tagline": "Pick the highlights of your illustration and get a cinematic camera-move video.",
+    "tagline": "Pick the highlights of your image and get a cinematic camera-move video.",
     "titleAlt": "PanShot"
   },
   "errors": {
@@ -24,8 +24,11 @@
     "zh-TW": "繁體中文"
   },
   "meta": {
-    "description": "Pick the highlights of your illustration and get a cinematic camera-move video.",
-    "title": "PanShot - Turn illustrations into cinematic camera moves"
+    "description": "Pick highlight points on your image and export a cinematic zoom-cut-pull camera-move video in the browser. Free, no sign-up.",
+    "keywords": "camera move video,image to video,zoom effect,cinematic,video maker,still image,PanShot",
+    "ogDescription": "Pick highlight points on your image and export a cinematic zoom-cut-pull camera-move video in the browser.",
+    "ogTitle": "PanShot - Turn images into cinematic camera moves",
+    "title": "PanShot - Turn images into cinematic camera moves"
   },
   "status": {
     "cancelled": "Cancelled",
@@ -35,7 +38,7 @@
   },
   "upload": {
     "formats": "PNG / JPG / WEBP",
-    "title": "Upload an illustration"
+    "title": "Choose an image"
   },
   "view": {
     "label": "View",
