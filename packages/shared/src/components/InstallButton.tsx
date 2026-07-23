@@ -6,12 +6,20 @@ import { PwaInstallDialog } from "./PwaInstallDialog";
 import { useT } from "../i18n/context";
 import { usePwaInstall } from "../hooks/usePwaInstall";
 
+function isDesktopApp(): boolean {
+  if (typeof window === "undefined") return false;
+  const desktop = (window as Window & { panshot?: { platform: string } })
+    .panshot;
+  if (desktop != null) return true;
+  return /Electron/i.test(navigator.userAgent);
+}
+
 export function InstallButton() {
   const t = useT();
   const pwa = usePwaInstall();
   const [open, setOpen] = useState(false);
 
-  if (pwa.isInstalled) return null;
+  if (isDesktopApp() || pwa.isInstalled) return null;
 
   return (
     <>

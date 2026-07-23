@@ -87,9 +87,7 @@ bun run build:desktop:mac
 - React + TypeScript + Tailwind CSS v4
 - Web: Next.js (App Router) + PWA
 - Desktop: Electron + Vite + electron-builder
-- Canvas 2D で演出レンダリング / MediaRecorder で WebM / MP4 書き出し
-
-アイコンを差し替えたときは `apps/web/public/icon.png`（512・透過）を更新してから:
+- Canvas 2D で演出レンダリング / MediaRecorder で MP4 書き出し（非対応時は WebM）
 
 ```bash
 bun run icons

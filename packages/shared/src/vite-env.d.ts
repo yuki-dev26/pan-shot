@@ -7,3 +7,9 @@ declare module "*.webp" {
   const src: string | { src: string };
   export default src;
 }
+
+interface Window {
+  panshot?: {
+    platform: string;
+  };
+}
