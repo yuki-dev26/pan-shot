@@ -52,7 +52,7 @@ export function VideoStudio() {
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState<string | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
-  const [downloadName, setDownloadName] = useState("panshot.webm");
+  const [downloadName, setDownloadName] = useState("panshot.mp4");
   const [fileName, setFileName] = useState("panshot");
   const [error, setError] = useState<string | null>(null);
   const [loadingImage, setLoadingImage] = useState(false);
