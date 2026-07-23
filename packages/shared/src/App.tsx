@@ -1,6 +1,7 @@
 "use client";
 
 import titleAsset from "../assets/title.png";
+import { InstallButton } from "./components/InstallButton";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
 import { SiteInfo } from "./components/SiteInfo";
 import { VideoStudio } from "./components/VideoStudio";
@@ -25,7 +26,8 @@ export function App() {
               draggable={false}
             />
           </h1>
-          <div className="mt-2 shrink-0 sm:mt-3.5">
+          <div className="mt-2 flex shrink-0 items-center gap-2 sm:mt-3.5 sm:gap-2.5">
+            <InstallButton />
             <LanguageSwitcher />
           </div>
         </div>

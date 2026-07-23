@@ -43,6 +43,34 @@
       "cta": "X Chat"
     }
   },
+  "install": {
+    "label": "Install",
+    "title": "Install the app",
+    "subtitle": "Add to your home screen for quick access anytime",
+    "button": "Install",
+    "buttonLoading": "Installing…",
+    "showInstructions": "How to install",
+    "close": "Close",
+    "installed": "Already installed",
+    "unsupportedBrowser": "Installation is not available in this browser. Try Safari or Chrome.",
+    "fallback": "Already installed, or your browser may not support installation.",
+    "ios": {
+      "step1a": "Tap Share",
+      "step1b": "or",
+      "step1c": "from the browser menu",
+      "step2": "Scroll down and choose Add to Home Screen",
+      "note": "If you do not see the option, try Safari or Chrome.",
+      "imageAlt": "iOS install steps",
+      "imageAlt1": "iOS install steps 1",
+      "imageAlt2": "iOS install steps 2",
+      "prevImage": "Previous image",
+      "nextImage": "Next image"
+    },
+    "macSafari": {
+      "step1": "Open File in the Safari menu bar",
+      "step2": "Choose Add to Dock"
+    }
+  },
   "errors": {
     "exportFailed": "Export failed",
     "loadFailed": "Failed to load the image",

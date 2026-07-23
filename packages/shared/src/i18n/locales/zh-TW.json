@@ -43,6 +43,34 @@
       "cta": "X Chat"
     }
   },
+  "install": {
+    "label": "安裝",
+    "title": "安裝 App",
+    "subtitle": "加入主畫面，隨時快速存取",
+    "button": "安裝",
+    "buttonLoading": "安裝中…",
+    "showInstructions": "查看安裝方法",
+    "close": "關閉",
+    "installed": "已安裝",
+    "unsupportedBrowser": "此瀏覽器無法安裝。請嘗試 Safari 或 Chrome。",
+    "fallback": "可能已安裝，或瀏覽器不支援安裝。",
+    "ios": {
+      "step1a": "在瀏覽器中點按",
+      "step1b": "或",
+      "step1c": "進行分享",
+      "step2": "向下捲動並選擇「加入主畫面」",
+      "note": "若未顯示，請嘗試 Safari 或 Chrome。",
+      "imageAlt": "iOS 安裝步驟",
+      "imageAlt1": "iOS 安裝步驟 1",
+      "imageAlt2": "iOS 安裝步驟 2",
+      "prevImage": "上一張",
+      "nextImage": "下一張"
+    },
+    "macSafari": {
+      "step1": "在 Safari 選單列開啟「檔案」",
+      "step2": "選擇「加入 Dock」"
+    }
+  },
   "errors": {
     "exportFailed": "匯出失敗",
     "loadFailed": "圖片載入失敗",
