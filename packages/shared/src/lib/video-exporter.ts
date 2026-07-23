@@ -1,3 +1,4 @@
+import fixWebmDuration from "fix-webm-duration";
 import {
   buildTimeline,
   outputSize,
@@ -12,14 +13,16 @@ export type ExportProgress = {
   progress: number;
 };
 
+const EXPORT_MAX_SIDE = 1920;
+
 function pickMimeType(): string {
   const candidates = [
-    'video/mp4;codecs="avc1.42E01E"',
-    "video/mp4;codecs=avc1",
-    "video/mp4",
     "video/webm;codecs=vp9",
     "video/webm;codecs=vp8",
     "video/webm",
+    'video/mp4;codecs="avc1.42E01E"',
+    "video/mp4;codecs=avc1",
+    "video/mp4",
   ];
   for (const type of candidates) {
     if (
@@ -51,7 +54,7 @@ export async function exportCinematicVideo(
   const size =
     options.width != null && options.height != null
       ? { width: options.width, height: options.height }
-      : outputSize(image);
+      : outputSize(image, EXPORT_MAX_SIDE);
   const { width, height } = size;
 
   const canvas = document.createElement("canvas");
@@ -62,7 +65,7 @@ export async function exportCinematicVideo(
     throw new Error("Canvas を初期化できませんでした");
   }
 
-  const segments = buildTimeline(options.focusPoints);
+  const segments = buildTimeline(options.focusPoints, options.mirrorPan);
   const duration = timelineDuration(segments);
   const totalFrames = Math.max(1, Math.round((duration / 1000) * fps));
   const frameInterval = 1000 / fps;
@@ -104,7 +107,7 @@ export async function exportCinematicVideo(
   });
 
   renderAtTime(ctx, image, segments, 0, width, height);
-  recorder.start(200);
+  recorder.start();
 
   const videoTrack = stream.getVideoTracks()[0] as MediaStreamTrack & {
     requestFrame?: () => void;
@@ -144,7 +147,13 @@ export async function exportCinematicVideo(
   if (recorder.state !== "inactive") recorder.stop();
   stream.getTracks().forEach((t) => t.stop());
 
-  const blob = await stopped;
+  let blob = await stopped;
+
+  if (mimeType.includes("webm")) {
+    const durationMs = (totalFrames / fps) * 1000;
+    blob = await fixWebmDuration(blob, durationMs, { logger: false });
+  }
+
   onProgress?.({ phase: "done", progress: 1 });
   return { blob, mimeType };
 }
@@ -154,6 +163,7 @@ export async function previewLoop(
   image: HTMLImageElement,
   focusPoints: [Point, Point],
   signal: AbortSignal,
+  mirrorPan = false,
 ) {
   const ctx = canvas.getContext("2d", { alpha: false });
   if (!ctx) return;
@@ -162,7 +172,7 @@ export async function previewLoop(
   canvas.width = width;
   canvas.height = height;
 
-  const segments = buildTimeline(focusPoints);
+  const segments = buildTimeline(focusPoints, mirrorPan);
   const duration = timelineDuration(segments);
   let start: number | null = null;
 

@@ -3,6 +3,7 @@ import type { Point } from "./types";
 
 export type RenderOptions = {
   focusPoints: [Point, Point];
+  mirrorPan?: boolean;
   width?: number;
   height?: number;
   fps?: number;
@@ -72,23 +73,27 @@ function easePull(t: number): number {
   return easeOutSine(easeInOutSine(clamp(t, 0, 1)));
 }
 
-export function buildTimeline(focusPoints: [Point, Point]): Segment[] {
+export function buildTimeline(
+  focusPoints: [Point, Point],
+  mirrorPan = false,
+): Segment[] {
   const shotZoom = 2.65;
   const shotA = cam(focusPoints[0].x, focusPoints[0].y, shotZoom);
   const shotB = cam(focusPoints[1].x, focusPoints[1].y, shotZoom);
   const full = cam(0.5, 0.5, 1);
 
-  const totalMs = 8000;
+  const totalMs = 7000;
   const holdMs = 1300;
   const xfadeMs = 1200;
   const holdBMs = 480;
-  const endingMs = 1500;
+  const endingMs = 500;
   const finaleMs = totalMs - (holdMs + xfadeMs + holdBMs + endingMs);
   const finaleBlendMs = 1200;
 
   const panAmount = 0.05;
-  const panA = panAmount;
-  const panB = -panAmount * 0.7;
+  const sign = mirrorPan ? -1 : 1;
+  const panA = panAmount * sign;
+  const panB = -panAmount * 0.7 * sign;
 
   const unitMs = holdMs + xfadeMs;
   const u = (ms: number) => ms / unitMs;
@@ -100,11 +105,7 @@ export function buildTimeline(focusPoints: [Point, Point]): Segment[] {
   const b0 = withPan(shotB, panB, 0);
   const bAfterEnter = withPan(shotB, panB, u(xfadeMs));
   const bHoldEnd = withPan(shotB, panB, u(xfadeMs + holdBMs));
-  const bExitEnd = withPan(
-    shotB,
-    panB,
-    u(xfadeMs + holdBMs + finaleBlendMs),
-  );
+  const bExitEnd = withPan(shotB, panB, u(xfadeMs + holdBMs + finaleBlendMs));
 
   const fullNear = cam(0.5, 0.5, 1.06);
 
@@ -205,7 +206,10 @@ function drawCamera(
   height: number,
   camera: CameraState,
 ) {
-  const fit = Math.min(width / image.naturalWidth, height / image.naturalHeight);
+  const fit = Math.min(
+    width / image.naturalWidth,
+    height / image.naturalHeight,
+  );
   const scale = fit * camera.zoom;
   const drawW = image.naturalWidth * scale;
   const drawH = image.naturalHeight * scale;
@@ -322,8 +326,7 @@ export function outputSize(
 ): { width: number; height: number } {
   const iw = image.naturalWidth;
   const ih = image.naturalHeight;
-  const scale =
-    maxSide == null ? 1 : Math.min(1, maxSide / Math.max(iw, ih));
+  const scale = maxSide == null ? 1 : Math.min(1, maxSide / Math.max(iw, ih));
   const width = Math.max(2, Math.round((iw * scale) / 2) * 2);
   const height = Math.max(2, Math.round((ih * scale) / 2) * 2);
   return { width, height };

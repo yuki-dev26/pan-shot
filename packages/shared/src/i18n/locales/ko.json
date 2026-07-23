@@ -32,7 +32,7 @@
   },
   "status": {
     "cancelled": "취소했습니다",
-    "done": "완료 ({ext}). 다운로드할 수 있습니다",
+    "done": "다운로드 완료!",
     "encoding": "파일을 묶는 중…",
     "exporting": "미리보기와 같은 내용을 내보내는 중…",
     "loadingImage": "이미지 불러오는 중…"
@@ -52,6 +52,7 @@
     "hint": "미리보기와 같은 연출을 그대로 영상으로 내보냅니다.",
     "label": "Zoom points",
     "pickerAlt": "줌 위치를 고를 이미지",
-    "pointAria": "줌 {n}"
+    "pointAria": "줌 {n}",
+    "swapAria": "줌 화살표 방향 바꾸기"
   }
 }

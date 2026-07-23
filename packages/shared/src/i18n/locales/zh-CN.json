@@ -32,7 +32,7 @@
   },
   "status": {
     "cancelled": "已取消",
-    "done": "完成（{ext}）。可以下载了",
+    "done": "下载完成！",
     "encoding": "正在打包文件…",
     "exporting": "正在导出与预览相同的内容…",
     "loadingImage": "正在加载图片…"
@@ -52,6 +52,7 @@
     "hint": "将预览中的相同效果直接导出为视频。",
     "label": "Zoom points",
     "pickerAlt": "用于选择缩放位置的图片",
-    "pointAria": "缩放{n}"
+    "pointAria": "缩放{n}",
+    "swapAria": "切换缩放箭头方向"
   }
 }

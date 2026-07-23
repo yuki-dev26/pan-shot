@@ -32,7 +32,7 @@
   },
   "status": {
     "cancelled": "キャンセルしました",
-    "done": "完成（{ext}）。ダウンロードできます",
+    "done": "ダウンロード完了！",
     "encoding": "ファイルをまとめています…",
     "exporting": "プレビューと同じ内容を書き出しています…",
     "loadingImage": "画像を読み込み中…"
@@ -52,6 +52,7 @@
     "hint": "プレビューと同じ演出をそのまま動画に書き出します。",
     "label": "Zoom points",
     "pickerAlt": "ズーム位置を選ぶ画像",
-    "pointAria": "ズーム{n}"
+    "pointAria": "ズーム{n}",
+    "swapAria": "ズームの矢印方向を入れ替える"
   }
 }

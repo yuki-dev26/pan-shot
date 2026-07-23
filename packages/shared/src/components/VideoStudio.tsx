@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
+  ArrowLeftRight,
   Download,
   ImageUp,
   LoaderCircle,
@@ -26,8 +27,10 @@ const DEFAULT_POINTS: [Point, Point] = [
   { x: 0.68, y: 0.42 },
 ];
 
-const previewMinH = "min-h-[min(48vh,420px)] sm:min-h-[min(56vh,560px)] md:min-h-[min(62vh,640px)]";
-const previewMaxH = "max-h-[min(48vh,420px)] sm:max-h-[min(56vh,560px)] md:max-h-[min(62vh,640px)]";
+const previewMinH =
+  "min-h-[min(48vh,420px)] sm:min-h-[min(56vh,560px)] md:min-h-[min(62vh,640px)]";
+const previewMaxH =
+  "max-h-[min(48vh,420px)] sm:max-h-[min(56vh,560px)] md:max-h-[min(62vh,640px)]";
 
 const btnBase =
   "inline-flex cursor-pointer items-center justify-center gap-2 border border-line bg-transparent px-4 py-3.5 text-center font-sans text-ink no-underline transition-[background,border-color,color,transform] duration-200 touch-manipulation disabled:cursor-not-allowed disabled:opacity-45";
@@ -39,8 +42,10 @@ export function VideoStudio() {
   const t = useT();
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [focusPoints, setFocusPoints] = useState<[Point, Point]>(DEFAULT_POINTS);
+  const [focusPoints, setFocusPoints] =
+    useState<[Point, Point]>(DEFAULT_POINTS);
   const [activePoint, setActivePoint] = useState<0 | 1>(0);
+  const [mirrorPan, setMirrorPan] = useState(false);
   const [viewMode, setViewMode] = useState<"edit" | "preview">("edit");
   const [dragging, setDragging] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -77,10 +82,16 @@ export function VideoStudio() {
     const controller = new AbortController();
     abortRef.current = controller;
 
-    void previewLoop(canvasRef.current, image, focusPoints, controller.signal);
+    void previewLoop(
+      canvasRef.current,
+      image,
+      focusPoints,
+      controller.signal,
+      mirrorPan,
+    );
 
     return () => controller.abort();
-  }, [image, focusPoints, viewMode]);
+  }, [image, focusPoints, viewMode, mirrorPan]);
 
   useEffect(() => {
     return () => {
@@ -153,7 +164,7 @@ export function VideoStudio() {
     try {
       const { blob, mimeType } = await exportCinematicVideo(
         image,
-        { focusPoints, fps: 30 },
+        { focusPoints, mirrorPan, fps: 30 },
         (p) => {
           setProgress(p.progress);
           if (p.phase === "encoding") setStatus(t("status.encoding"));
@@ -165,9 +176,7 @@ export function VideoStudio() {
       const name = `${fileName}-panshot.${extensionForMime(mimeType)}`;
       setVideoUrl(url);
       setDownloadName(name);
-      setStatus(
-        t("status.done", { ext: extensionForMime(mimeType).toUpperCase() }),
-      );
+      setStatus(t("status.done"));
 
       const a = document.createElement("a");
       a.href = url;
@@ -248,7 +257,10 @@ export function VideoStudio() {
               aria-hidden
             >
               {loadingImage ? (
-                <LoaderCircle className="size-6 animate-spin" strokeWidth={1.75} />
+                <LoaderCircle
+                  className="size-6 animate-spin"
+                  strokeWidth={1.75}
+                />
               ) : (
                 <Upload className="size-6" strokeWidth={1.75} />
               )}
@@ -270,6 +282,7 @@ export function VideoStudio() {
               imageUrl={previewUrl}
               focusPoints={focusPoints}
               activeIndex={activePoint}
+              mirrorPan={mirrorPan}
               onPick={handlePick}
             />
           </div>
@@ -281,11 +294,6 @@ export function VideoStudio() {
               ref={canvasRef}
               className={`block h-auto ${previewMaxH} w-auto max-w-full`}
             />
-            <div className="pointer-events-none absolute inset-x-3 bottom-3 flex justify-end gap-3 text-[0.65rem] tracking-[0.12em] text-white/70 uppercase sm:inset-x-3.5 sm:bottom-3.5 sm:text-[0.72rem]">
-              <span>
-                {image.naturalWidth}×{image.naturalHeight}
-              </span>
-            </div>
           </div>
         )}
 
@@ -300,7 +308,9 @@ export function VideoStudio() {
                 strokeWidth={1.75}
                 aria-hidden
               />
-              <p className="m-0 text-sm text-muted">{t("status.loadingImage")}</p>
+              <p className="m-0 text-sm text-muted">
+                {t("status.loadingImage")}
+              </p>
             </div>
           </div>
         )}
@@ -312,7 +322,11 @@ export function VideoStudio() {
             <p className="m-0 text-xs tracking-[0.14em] text-muted uppercase">
               {t("view.label")}
             </p>
-            <div className="grid grid-cols-2 gap-1.5" role="tablist" aria-label={t("view.switchAria")}>
+            <div
+              className="grid grid-cols-2 gap-1.5"
+              role="tablist"
+              aria-label={t("view.switchAria")}
+            >
               <button
                 type="button"
                 role="tab"
@@ -347,9 +361,29 @@ export function VideoStudio() {
 
         {image && (
           <div className="grid gap-3">
-            <p className="m-0 text-xs tracking-[0.14em] text-muted uppercase">
-              {t("zoom.label")}
-            </p>
+            <div className="flex items-center gap-1.5">
+              <p className="m-0 text-xs tracking-[0.14em] text-muted uppercase">
+                {t("zoom.label")}
+              </p>
+              <button
+                type="button"
+                className={`inline-flex size-6 shrink-0 cursor-pointer items-center justify-center border transition-colors duration-200 ${
+                  mirrorPan
+                    ? "border-accent/55 bg-accent/10 text-ink"
+                    : "border-line bg-transparent text-muted hover:border-white/28 hover:text-ink"
+                }`}
+                aria-label={t("zoom.swapAria")}
+                aria-pressed={mirrorPan}
+                title={t("zoom.swapAria")}
+                onClick={() => setMirrorPan((v) => !v)}
+              >
+                <ArrowLeftRight
+                  className="size-3.5"
+                  strokeWidth={1.75}
+                  aria-hidden
+                />
+              </button>
+            </div>
             <div
               className="grid grid-cols-2 gap-1.5"
               role="radiogroup"
@@ -397,11 +431,17 @@ export function VideoStudio() {
               disabled={imageBusy}
             >
               {loadingImage ? (
-                <LoaderCircle className={`${iconClass} animate-spin`} strokeWidth={1.75} aria-hidden />
+                <LoaderCircle
+                  className={`${iconClass} animate-spin`}
+                  strokeWidth={1.75}
+                  aria-hidden
+                />
               ) : (
                 <ImageUp className={iconClass} strokeWidth={1.75} aria-hidden />
               )}
-              {loadingImage ? t("status.loadingImage") : t("actions.changeImage")}
+              {loadingImage
+                ? t("status.loadingImage")
+                : t("actions.changeImage")}
             </button>
           )}
           <button
@@ -411,7 +451,11 @@ export function VideoStudio() {
             onClick={() => void handleExport()}
           >
             {exporting ? (
-              <LoaderCircle className={`${iconClass} animate-spin`} strokeWidth={2} aria-hidden />
+              <LoaderCircle
+                className={`${iconClass} animate-spin`}
+                strokeWidth={2}
+                aria-hidden
+              />
             ) : (
               <Download className={iconClass} strokeWidth={2} aria-hidden />
             )}
@@ -439,17 +483,26 @@ export function VideoStudio() {
                 />
               </div>
             )}
-            {status && <p className="m-0 text-[0.92rem] text-muted">{status}</p>}
+            {status && (
+              <p className="m-0 text-[0.92rem] text-muted">{status}</p>
+            )}
             {error && <p className="m-0 text-[0.92rem] text-danger">{error}</p>}
             {videoUrl && !exporting && (
-              <a className={`${btnGhost}`} href={videoUrl} download={downloadName}>
-                <Download className={iconClass} strokeWidth={1.75} aria-hidden />
+              <a
+                className={`${btnGhost}`}
+                href={videoUrl}
+                download={downloadName}
+              >
+                <Download
+                  className={iconClass}
+                  strokeWidth={1.75}
+                  aria-hidden
+                />
                 {t("actions.downloadAgain")}
               </a>
             )}
           </div>
         )}
-
       </aside>
     </div>
   );

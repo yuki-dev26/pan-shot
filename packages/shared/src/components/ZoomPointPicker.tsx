@@ -9,6 +9,7 @@ type Props = {
   imageUrl: string;
   focusPoints: [Point, Point];
   activeIndex: 0 | 1;
+  mirrorPan?: boolean;
   onPick: (index: 0 | 1, point: Point) => void;
 };
 
@@ -16,6 +17,7 @@ export function ZoomPointPicker({
   imageUrl,
   focusPoints,
   activeIndex,
+  mirrorPan = false,
   onPick,
 }: Props) {
   const t = useT();
@@ -51,7 +53,8 @@ export function ZoomPointPicker({
           draggable={false}
         />
         {focusPoints.map((point, i) => {
-          const Arrow = i === 0 ? ArrowRight : ArrowLeft;
+          const goesRight = i === 0 ? !mirrorPan : mirrorPan;
+          const Arrow = goesRight ? ArrowRight : ArrowLeft;
           const active = i === activeIndex;
           return (
             <span
@@ -69,13 +72,13 @@ export function ZoomPointPicker({
               </span>
               <span
                 className={`absolute top-1/2 -translate-y-1/2 ${
-                  i === 0 ? "left-full ml-0.5" : "right-full mr-0.5"
+                  goesRight ? "left-full ml-0.5" : "right-full mr-0.5"
                 }`}
               >
                 <Arrow
                   className={`block size-3.5 text-white drop-shadow-[0_1px_3px_rgb(0_0_0/0.75)] ${
                     active
-                      ? i === 0
+                      ? goesRight
                         ? "animate-nudge-right"
                         : "animate-nudge-left"
                       : ""

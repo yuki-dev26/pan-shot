@@ -32,7 +32,7 @@
   },
   "status": {
     "cancelled": "Cancelled",
-    "done": "Done ({ext}). Ready to download",
+    "done": "Download complete!",
     "encoding": "Packaging the file…",
     "exporting": "Exporting the same content as the preview…",
     "loadingImage": "Loading image…"
@@ -52,6 +52,7 @@
     "hint": "Export the same motion you see in the preview as a video.",
     "label": "Zoom points",
     "pickerAlt": "Image for choosing zoom points",
-    "pointAria": "Zoom {n}"
+    "pointAria": "Zoom {n}",
+    "swapAria": "Swap zoom arrow directions"
   }
 }
