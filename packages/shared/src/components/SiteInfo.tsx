@@ -19,7 +19,7 @@ function assetSrc(asset: string | { src: string }): string {
   return typeof asset === "string" ? asset : asset.src;
 }
 
-const BOOTH_URL = "https://yuki-p.booth.pm/";
+const BOOTH_URL = "https://yuki-p.booth.pm/items/8646087";
 const DEVELOPER_X_URL = "https://x.com/yuki_p02";
 
 const bodyText = "m-0 text-sm leading-relaxed text-muted sm:text-[0.95rem]";
