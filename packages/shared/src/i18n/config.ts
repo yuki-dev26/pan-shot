@@ -32,6 +32,31 @@ export function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value);
 }
 
+/**
+ * URL segment for each locale. The default locale is served from the site root
+ * so that the already-indexed `/` keeps its canonical position.
+ */
+export const localeSegments: Record<Locale, string> = {
+  ja: "",
+  en: "en",
+  ko: "ko",
+  "zh-CN": "zh-cn",
+  "zh-TW": "zh-tw",
+};
+
+export function localeToPath(locale: Locale): string {
+  const segment = localeSegments[locale];
+  return segment ? `/${segment}` : "/";
+}
+
+export function localeFromSegment(segment: string | undefined): Locale | null {
+  if (segment == null) return defaultLocale;
+  const normalized = segment.toLowerCase();
+  return (
+    locales.find((locale) => localeSegments[locale] === normalized) ?? null
+  );
+}
+
 export function detectLocale(): Locale {
   if (typeof window === "undefined") return defaultLocale;
 

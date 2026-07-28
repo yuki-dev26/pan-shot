@@ -1,13 +1,16 @@
 import type { MetadataRoute } from "next";
-import { getSiteUrl } from "../lib/site";
+import { defaultLocale, locales } from "@panshot/shared";
+import { absoluteLocaleUrl, hreflangAlternates } from "../lib/i18n-seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: getSiteUrl(),
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-  ];
+  const lastModified = new Date();
+  const languages = hreflangAlternates();
+
+  return locales.map((locale) => ({
+    url: absoluteLocaleUrl(locale),
+    lastModified,
+    changeFrequency: "weekly",
+    priority: locale === defaultLocale ? 1 : 0.8,
+    alternates: { languages },
+  }));
 }

@@ -28,48 +28,49 @@ type I18nContextValue = {
 
 const I18nContext = createContext<I18nContextValue | null>(null);
 
-export function I18nProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(defaultLocale);
+type I18nProviderProps = {
+  children: ReactNode;
+  locale?: Locale;
+  onLocaleChange?: (locale: Locale) => void;
+};
+
+export function I18nProvider({
+  children,
+  locale: fixedLocale,
+  onLocaleChange,
+}: I18nProviderProps) {
+  const [detectedLocale, setDetectedLocale] = useState<Locale>(defaultLocale);
   const [ready, setReady] = useState(false);
+  const isFixed = fixedLocale != null;
+  const locale = isFixed ? fixedLocale : detectedLocale;
 
   useEffect(() => {
+    if (isFixed) return;
     try {
       localStorage.removeItem("panshot-locale");
     } catch {
       // ignore
     }
-    setLocaleState(detectLocale());
+    setDetectedLocale(detectLocale());
     setReady(true);
-  }, []);
+  }, [isFixed]);
 
   useEffect(() => {
-    if (!ready) return;
+    if (isFixed || !ready) return;
     document.documentElement.lang = locale;
-    const dict = messages[locale];
-    const title = getMessage(dict, "meta.title");
-    const description = getMessage(dict, "meta.description");
-    const ogTitle = getMessage(dict, "meta.ogTitle");
-    const ogDescription = getMessage(dict, "meta.ogDescription");
-    document.title = title;
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", description);
-    const setMetaProperty = (property: string, content: string) => {
-      const el = document.querySelector(`meta[property="${property}"]`);
-      if (el) el.setAttribute("content", content);
-    };
-    setMetaProperty("og:title", ogTitle);
-    setMetaProperty("og:description", ogDescription);
-    const setMetaName = (name: string, content: string) => {
-      const el = document.querySelector(`meta[name="${name}"]`);
-      if (el) el.setAttribute("content", content);
-    };
-    setMetaName("twitter:title", ogTitle);
-    setMetaName("twitter:description", ogDescription);
-  }, [locale, ready]);
+    document.title = getMessage(messages[locale], "meta.title");
+  }, [isFixed, locale, ready]);
 
-  const setLocale = useCallback((next: Locale) => {
-    setLocaleState(next);
-  }, []);
+  const setLocale = useCallback(
+    (next: Locale) => {
+      if (onLocaleChange) {
+        onLocaleChange(next);
+        return;
+      }
+      setDetectedLocale(next);
+    },
+    [onLocaleChange],
+  );
 
   const value = useMemo<I18nContextValue>(() => {
     const dict = messages[locale];

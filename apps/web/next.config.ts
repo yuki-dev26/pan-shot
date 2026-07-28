@@ -12,6 +12,9 @@ const withPWA = withPWAInit({
 
 const nextConfig: NextConfig = {
   transpilePackages: ["@panshot/shared"],
+  async redirects() {
+    return [{ source: "/ja", destination: "/", permanent: true }];
+  },
 };
 
 export default withPWA(nextConfig);
