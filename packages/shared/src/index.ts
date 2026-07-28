@@ -13,7 +13,6 @@ export {
   localeLabels,
   locales,
   messages,
-  persistLocale,
   type Locale,
   type MessageKey,
   type Messages,

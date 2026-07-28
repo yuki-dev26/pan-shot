@@ -28,21 +28,12 @@ export const localeLabels: Record<Locale, string> = {
   "zh-TW": "繁體中文",
 };
 
-const STORAGE_KEY = "panshot-locale";
-
 export function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value);
 }
 
 export function detectLocale(): Locale {
   if (typeof window === "undefined") return defaultLocale;
-
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored && isLocale(stored)) return stored;
-  } catch {
-    // ignore
-  }
 
   const candidates = [
     navigator.language,
@@ -70,14 +61,6 @@ export function detectLocale(): Locale {
   }
 
   return defaultLocale;
-}
-
-export function persistLocale(locale: Locale) {
-  try {
-    localStorage.setItem(STORAGE_KEY, locale);
-  } catch {
-    // ignore
-  }
 }
 
 type NestedKeyOf<T, Prefix extends string = ""> = T extends object

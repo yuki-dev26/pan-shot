@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit, Syne } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { I18nProvider, defaultLocale, messages } from "@panshot/shared";
 import { getSiteUrl } from "../lib/site";
 import "./globals.css";
@@ -106,13 +107,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang={defaultLocale} className={`${syne.variable} ${outfit.variable} h-full`}>
+    <html
+      lang={defaultLocale}
+      className={`${syne.variable} ${outfit.variable} h-full`}
+    >
       <body className="min-h-full overflow-x-clip antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <I18nProvider>{children}</I18nProvider>
+        <Analytics />
       </body>
     </html>
   );

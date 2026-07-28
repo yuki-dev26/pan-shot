@@ -14,7 +14,6 @@ import {
   detectLocale,
   getMessage,
   messages,
-  persistLocale,
   type Locale,
   type MessageKey,
   type Messages,
@@ -34,6 +33,11 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    try {
+      localStorage.removeItem("panshot-locale");
+    } catch {
+      // ignore
+    }
     setLocaleState(detectLocale());
     setReady(true);
   }, []);
@@ -65,7 +69,6 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   const setLocale = useCallback((next: Locale) => {
     setLocaleState(next);
-    persistLocale(next);
   }, []);
 
   const value = useMemo<I18nContextValue>(() => {

@@ -22,7 +22,7 @@
     "icons": "bun run --filter @panshot/web icons"
   },
   "devDependencies": {
-    "typescript": "^5"
+    "typescript": "^5.9.3"
   },
   "overrides": {
     "mime-types": "3.0.2"
