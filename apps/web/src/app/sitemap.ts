@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { defaultLocale, locales } from "@panshot/shared";
 import { absoluteLocaleUrl, hreflangAlternates } from "../lib/i18n-seo";
 
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
   const languages = hreflangAlternates();
