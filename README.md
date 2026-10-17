@@ -4,6 +4,12 @@
 
 静止画を選択すると、寄り・カット・引きのシネマティック演出動画を書き出してダウンロードできます。Web とデスクトップ（Windows / Mac）で同じ UI・ロジックを共有しています。
 
+## デモ動画
+
+[![PanShot デモ動画](https://img.youtube.com/vi/l-NnhfKXOR4/maxresdefault.jpg)](https://youtu.be/l-NnhfKXOR4 "PanShot デモ動画を再生")
+
+> ※クリックすると YouTube で動画を再生できます。
+
 ## 構成
 
 ```text
@@ -92,3 +98,7 @@ bun run build:desktop:mac
 ```bash
 bun run icons
 ```
+
+## ライセンス
+
+[MIT License](LICENSE)
