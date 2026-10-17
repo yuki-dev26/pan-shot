@@ -37,6 +37,8 @@ jobs:
 
       - name: Build web
         # apps/ 配下のフォルダに直接入ってビルドします
+        env:
+          NEXT_PUBLIC_SITE_URL: https://panshot.yukip02.com
         run: |
           if [ -d "apps/web" ]; then
             cd apps/web && bun run build
