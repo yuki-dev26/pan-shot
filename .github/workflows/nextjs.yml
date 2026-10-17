@@ -33,13 +33,21 @@ jobs:
         run: bun install
 
       - name: Build web
-        run: bun run --filter pan-shot-web build
-        # ※もし package.json の名前が違う場合は、ここを cd apps/web && bun run build などに変えます
+        # apps/ 配下のフォルダに直接入ってビルドします
+        run: |
+          if [ -d "apps/web" ]; then
+            cd apps/web && bun run build
+          elif [ -d "apps/pan-shot-web" ]; then
+            cd apps/pan-shot-web && bun run build
+          else
+            cd apps/* && bun run build
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: apps/web/out
+          # out ディレクトリを自動検出してアップロード
+          path: apps/**/out
 
   deploy:
     environment:
