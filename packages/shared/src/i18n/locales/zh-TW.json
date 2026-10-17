@@ -18,11 +18,6 @@
       "step2": "指定縮放位置",
       "step3": "預覽確認後下載"
     },
-    "support": {
-      "title": "支持",
-      "body": "正在販售 Windows / Mac 版。",
-      "cta": "BOOTH"
-    },
     "developer": {
       "title": "開發者",
       "name": "yuki-P"
@@ -39,8 +34,8 @@
     },
     "contact": {
       "title": "聯絡方式",
-      "body": "問題與回饋請透過 X 私訊聯繫。",
-      "cta": "X Chat"
+      "body": "問題與回饋請透過聯絡表單聯繫。",
+      "cta": "Contact"
     }
   },
   "install": {

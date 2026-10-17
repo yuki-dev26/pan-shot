@@ -18,11 +18,6 @@
       "step2": "줌 위치 지정",
       "step3": "미리보기로 확인 후 다운로드"
     },
-    "support": {
-      "title": "후원",
-      "body": "Windows·Mac 버전을 판매 중입니다.",
-      "cta": "BOOTH"
-    },
     "developer": {
       "title": "개발자",
       "name": "yuki-P"
@@ -39,8 +34,8 @@
     },
     "contact": {
       "title": "문의",
-      "body": "질문·버그 제보는 X 메시지로 부탁드립니다.",
-      "cta": "X Chat"
+      "body": "질문·버그 제보는 문의 폼으로 부탁드립니다.",
+      "cta": "Contact"
     }
   },
   "install": {

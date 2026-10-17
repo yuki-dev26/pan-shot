@@ -3,7 +3,6 @@
 import {
   BookOpen,
   ExternalLink,
-  Heart,
   MessageCircle,
   Scale,
   ShieldCheck,
@@ -19,8 +18,8 @@ function assetSrc(asset: string | { src: string }): string {
   return typeof asset === "string" ? asset : asset.src;
 }
 
-const BOOTH_URL = "https://yuki-p.booth.pm/items/8646087";
-const DEVELOPER_X_URL = "https://x.com/yuki_p02";
+const DEVELOPER_SITE_URL = "https://yukip02.com/";
+const CONTACT_URL = "https://yukip02.com/contact";
 
 const bodyText = "m-0 text-sm leading-relaxed text-muted sm:text-[0.95rem]";
 
@@ -64,7 +63,7 @@ export function SiteInfo() {
       </div>
 
       <div className="grid gap-8 sm:gap-10 md:grid-cols-[1fr_1fr_minmax(16rem,0.9fr)] md:grid-rows-[auto_auto] md:items-start md:gap-x-8 lg:gap-x-10">
-        <div className="order-1 md:col-start-1 md:row-start-1">
+        <div className="order-1 md:col-start-1 md:row-start-1 md:row-span-2">
           <SectionHeading icon={BookOpen}>
             {t("info.howto.title")}
           </SectionHeading>
@@ -89,34 +88,12 @@ export function SiteInfo() {
           </ol>
         </div>
 
-        <div className="order-3 md:col-start-2 md:row-start-1">
-          <SectionHeading icon={Heart}>
-            {t("info.support.title")}
-          </SectionHeading>
-          <p className={`${bodyText} mb-3.5`}>{t("info.support.body")}</p>
-          <a
-            href={BOOTH_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 border border-accent/40 bg-accent/8 px-4 py-2.5 font-sans text-sm text-ink no-underline transition-[background,border-color,transform] duration-200 hover:-translate-y-px hover:border-accent/70 hover:bg-accent/14"
-          >
-            <span className="font-medium tracking-tight">
-              {t("info.support.cta")}
-            </span>
-            <ExternalLink
-              className="size-3.5 shrink-0 text-muted"
-              strokeWidth={1.75}
-              aria-hidden
-            />
-          </a>
-        </div>
-
-        <div className="order-2 md:col-start-1 md:row-start-2">
+        <div className="order-2 md:col-start-2 md:row-start-1">
           <SectionHeading icon={UserRound}>
             {t("info.developer.title")}
           </SectionHeading>
           <a
-            href={DEVELOPER_X_URL}
+            href={DEVELOPER_SITE_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-3 no-underline"
@@ -133,18 +110,18 @@ export function SiteInfo() {
               <span className="font-display text-[0.95rem] tracking-tight text-ink transition-colors duration-200 group-hover:text-accent">
                 {t("info.developer.name")}
               </span>
-              <span className="text-xs text-muted">@yuki_p02</span>
+              <span className="text-xs text-muted">yukip02.com</span>
             </span>
           </a>
         </div>
 
-        <div className="order-4 md:col-start-2 md:row-start-2">
+        <div className="order-3 md:col-start-2 md:row-start-2">
           <SectionHeading icon={MessageCircle}>
             {t("info.contact.title")}
           </SectionHeading>
           <p className={`${bodyText} mb-3.5`}>{t("info.contact.body")}</p>
           <a
-            href={DEVELOPER_X_URL}
+            href={CONTACT_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-2 border border-accent/40 bg-accent/8 px-4 py-2.5 font-sans text-sm text-ink no-underline transition-[background,border-color,transform] duration-200 hover:-translate-y-px hover:border-accent/70 hover:bg-accent/14"
@@ -160,7 +137,7 @@ export function SiteInfo() {
           </a>
         </div>
 
-        <div className="order-5 md:col-start-3 md:row-start-1">
+        <div className="order-4 md:col-start-3 md:row-start-1">
           <SectionHeading icon={ShieldCheck}>
             {t("info.privacy.title")}
           </SectionHeading>
@@ -183,7 +160,7 @@ export function SiteInfo() {
           </ul>
         </div>
 
-        <div className="order-6 md:col-start-3 md:row-start-2">
+        <div className="order-5 md:col-start-3 md:row-start-2">
           <SectionHeading icon={Scale}>
             {t("info.disclaimer.title")}
           </SectionHeading>

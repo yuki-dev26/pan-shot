@@ -18,11 +18,6 @@
       "step2": "Set the zoom points",
       "step3": "Preview and download"
     },
-    "support": {
-      "title": "Support",
-      "body": "Windows and Mac versions are listed for sale.",
-      "cta": "BOOTH"
-    },
     "developer": {
       "title": "Developer",
       "name": "yuki-P"
@@ -39,8 +34,8 @@
     },
     "contact": {
       "title": "Contact",
-      "body": "Questions and bug reports via X messages, please.",
-      "cta": "X Chat"
+      "body": "Questions and bug reports via contact form, please.",
+      "cta": "Contact"
     }
   },
   "install": {
